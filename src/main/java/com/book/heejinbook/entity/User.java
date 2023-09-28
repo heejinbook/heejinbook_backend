@@ -1,6 +1,7 @@
 package com.book.heejinbook.entity;
 
 import com.book.heejinbook.dto.user.request.SignupRequest;
+import com.book.heejinbook.security.UserRole;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.DynamicInsert;
@@ -53,6 +54,9 @@ public class User {
     @UpdateTimestamp
     @Column(name = "updated_at", insertable = false)
     private Instant updatedAt;
+
+    @Transient
+    private UserRole role;
 
     public static User from(SignupRequest signupRequest, String passwordEnc) {
         return User.builder()
