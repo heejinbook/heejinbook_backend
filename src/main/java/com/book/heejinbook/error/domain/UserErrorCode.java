@@ -1,5 +1,6 @@
-package com.book.heejinbook.error;
+package com.book.heejinbook.error.domain;
 
+import com.book.heejinbook.error.ErrorCode;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.springframework.http.HttpStatus;

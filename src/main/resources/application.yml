@@ -30,8 +30,23 @@ spring:
       max-file-size: 10MB
 logging:
   config: classpath:logback.xml
+  level:
+    com:
+      amazonaws:
+        util:
+          EC2MetadataUtils: error
 #jasypt
 jasypt:
   encryptor:
     bean: jasyptStringEncryptor
 secret-key-source: ${SECRET_KEY_SOURCE}
+#s3
+cloud:
+  aws:
+    s3:
+      bucket: ENC(4q27BRSdpVCjB4RGlDPisohwY8POoqwX)
+    stack.auto: false
+    region.static: ap-northeast-2
+    credentials:
+      accessKey: ENC(2ZAyIpTDzAmMhq59ZabZctFKhCcuWSaUpyLsUA/8z8c=)
+      secretKey: ENC(RwmAKGYQSvwVaxY1MmSHuAyW5wLWc2Wwor/u1m7V/gojv5G1f7ntAYGe8jHStSqGb/M+5tSkLrE=)
