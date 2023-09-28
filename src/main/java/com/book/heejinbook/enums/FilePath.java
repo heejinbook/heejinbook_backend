@@ -1,7 +1,7 @@
 package com.book.heejinbook.enums;
 
 public enum FilePath {
-    TEST_DIR("user/image/"),
+    USER_DIR("user/"),
     SEPARATE_POINT(".com/"),
     SHOP_DIR("shop/"),
     MENU_DIR("menu/"),
