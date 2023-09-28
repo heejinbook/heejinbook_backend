@@ -18,28 +18,34 @@ public class AuthInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
 
-        if (handler instanceof HandlerMethod) {
-            HandlerMethod handlerMethod = (HandlerMethod) handler;
-            Auth authAnnotation = handlerMethod.getMethodAnnotation(Auth.class);
 
-            if (authAnnotation != null) {
-                boolean includeUserIdx = authAnnotation.includeUserIdx();
-                if (includeUserIdx) {
+        try{
+            if (handler instanceof HandlerMethod) {
+                HandlerMethod handlerMethod = (HandlerMethod) handler;
+                Auth authAnnotation = handlerMethod.getMethodAnnotation(Auth.class);
 
-                    if (!request.getHeader("Authorization").startsWith("Bearer ")) {
-                        throw new CustomException(UserErrorCode.HANDLE_ACCESS_DENIED);
+                if (authAnnotation != null) {
+                    boolean includeUserIdx = authAnnotation.includeUserIdx();
+                    if (includeUserIdx) {
+
+                        if (!request.getHeader("Authorization").startsWith("Bearer ")) {
+                            throw new CustomException(UserErrorCode.HANDLE_ACCESS_DENIED);
+                        }
+                        String token = request.getHeader("Authorization").split(" ")[1];
+
+                        Long userId = TokenProvider.getUserId(token);
+                        request.setAttribute("userId", userId);
+                        AuthHolder.setUserId(userId);
                     }
-                    String token = request.getHeader("Authorization").split(" ")[1];
-
-                    Long userId = TokenProvider.getUserId(token);
-                    request.setAttribute("userId", userId);
-                    AuthHolder.setUserId(userId);
+                    return true;
                 }
-                return true;
             }
+
+            return HandlerInterceptor.super.preHandle(request, response, handler);
+        } catch (NullPointerException e) {
+            throw new CustomException(UserErrorCode.HANDLE_ACCESS_DENIED);
         }
 
-        return HandlerInterceptor.super.preHandle(request, response, handler);
     }
 
     // JWT 토큰 검증 로직을 여기에 구현
