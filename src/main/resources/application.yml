@@ -14,8 +14,8 @@ spring:
     cache: false
   datasource:
     url: ENC(TagPEsjqJt4ySoDvM1hJWbmbrM4/rsOC9Vg3sGED9TvqsoGbNcyQxhMQXYAvdiQWP5ffyxjrtxribYaUclZNRmYZ0FZku1Tm8xJHnXjDlRHlv7Hpy3eqdqmgNv8ZuijQ)
-    password: ENC(1wPjTnGOAniEIRwbG4e3Jg==)
-    username: ENC(HFY9injYka4FEEHEvpeo7V3H7euFhRY5)
+    password: ENC(wTTncixr5KBfMMdW4lTEVBC9JJk1+bcN)
+    username: ENC(ItHQiVe7HNltWJbKPPciFQ==)
     driver-class-name: com.mysql.cj.jdbc.Driver
   mvc:
     pathmatch:
