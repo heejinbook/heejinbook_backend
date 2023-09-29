@@ -3,6 +3,7 @@ package com.book.heejinbook.controller;
 import com.book.heejinbook.dto.book.request.BookListRequest;
 import com.book.heejinbook.dto.book.request.KakaoBookDataRequest;
 import com.book.heejinbook.dto.book.response.BookListResponse;
+import com.book.heejinbook.dto.book.response.DetailBookResponse;
 import com.book.heejinbook.dto.book.response.KakaoBookResponse;
 import com.book.heejinbook.dto.vo.PaginationResponse;
 import com.book.heejinbook.dto.vo.Response;
@@ -34,6 +35,12 @@ public class BookController {
     public Response<PaginationResponse<BookListResponse>> getList(BookListRequest bookListRequest,
                                                                   Pageable pageable) {
         return ApiUtils.success(HttpStatus.OK, "북 리스트 조회 성공", bookService.getList(bookListRequest, pageable));
+    }
+
+    @GetMapping("/{book_id}")
+    public Response<DetailBookResponse> getDetailBook(@PathVariable("book_id") Long bookId) {
+
+        return ApiUtils.success(HttpStatus.OK, "북 디테일 조회 성공", bookService.getDetail(bookId));
     }
 
 

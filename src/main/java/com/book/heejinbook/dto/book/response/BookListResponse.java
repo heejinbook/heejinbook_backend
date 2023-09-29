@@ -13,6 +13,6 @@ public class BookListResponse {
     private String title;
     private String author;
     private String thumbnail;
-    private Integer reviewCount;
+    private Long reviewCount;
 
 }

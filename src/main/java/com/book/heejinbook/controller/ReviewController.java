@@ -2,6 +2,7 @@ package com.book.heejinbook.controller;
 
 import com.book.heejinbook.dto.book.response.BookListResponse;
 import com.book.heejinbook.dto.review.request.RegisterReviewRequest;
+import com.book.heejinbook.dto.review.response.DetailReviewResponse;
 import com.book.heejinbook.dto.review.response.ReviewListResponse;
 import com.book.heejinbook.dto.review.response.ReviewSwiperResponse;
 import com.book.heejinbook.dto.vo.PaginationResponse;
@@ -53,6 +54,11 @@ public class ReviewController {
     public Response<Void> deleteReview(@PathVariable("review_id")Long reviewId) {
         reviewService.deleteReview(reviewId);
         return ApiUtils.success(HttpStatus.OK, "리뷰 삭제 완료", null);
+    }
+
+    @GetMapping("/{review_id}")
+    public Response<DetailReviewResponse> detailReview(@PathVariable("review_id") Long reviewId) {
+        return ApiUtils.success(HttpStatus.OK, "리뷰 조회 완료", reviewService.getDetailReview(reviewId));
     }
 
 

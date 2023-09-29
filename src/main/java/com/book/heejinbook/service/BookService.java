@@ -3,10 +3,14 @@ package com.book.heejinbook.service;
 import com.book.heejinbook.dto.book.request.BookListRequest;
 import com.book.heejinbook.dto.book.request.KakaoBookDataRequest;
 import com.book.heejinbook.dto.book.response.BookListResponse;
+import com.book.heejinbook.dto.book.response.DetailBookResponse;
 import com.book.heejinbook.dto.book.response.KakaoBookResponse;
 import com.book.heejinbook.dto.vo.PaginationResponse;
 import com.book.heejinbook.entity.Book;
+import com.book.heejinbook.error.CustomException;
+import com.book.heejinbook.error.domain.BookErrorCode;
 import com.book.heejinbook.repository.BookRepository;
+import com.book.heejinbook.repository.ReviewRepository;
 import com.book.heejinbook.utils.PaginationBuilder;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -24,6 +28,7 @@ import java.util.stream.Collectors;
 @Slf4j
 @RequiredArgsConstructor
 public class BookService {
+    private final ReviewRepository reviewRepository;
     private final BookRepository bookRepository;
 
     @Value("${kakao.kakaoClientId}")
@@ -56,5 +61,17 @@ public class BookService {
                 .totalElements(pageData.getTotalElements())
                 .build();
 
+    }
+
+
+    public DetailBookResponse getDetail(Long bookId) {
+
+        Book book = validBook(bookId);
+        Long reviewCount = reviewRepository.countByBook(book);
+        return DetailBookResponse.from(book, reviewCount);
+    }
+
+    private Book validBook(Long bookId) {
+        return bookRepository.findById(bookId).orElseThrow(() -> new CustomException(BookErrorCode.NOT_FOUND_BOOK));
     }
 }
