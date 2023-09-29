@@ -12,9 +12,12 @@ import org.springframework.data.repository.query.Param;
 public interface BookRepository extends JpaRepository<Book, Long> {
 
     @Query("SELECT new com.book.heejinbook.dto.book.response.BookListResponse " +
-            "(b.id, b.title, b.author, b.thumbnailUrl, 0) " +
+            "(b.id, b.title, b.author, b.thumbnailUrl, COUNT(r)) " +
             "FROM Book b " +
             "JOIN b.category c " +
+            "LEFT OUTER JOIN Review r " +
+            "ON r.book = b " +
+            "AND r.isDeleted = false " +
             "WHERE (:#{#request.category} = 0L OR :#{#request.category} IS NULL OR c.id = :#{#request.category}) " +
             "AND (:#{#request.searchKeyword} IS NULL OR LOWER(b.title) LIKE CONCAT('%', LOWER(:#{#request.searchKeyword}), '%')) "
     )

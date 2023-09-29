@@ -12,6 +12,8 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
 
 public interface ReviewRepository extends JpaRepository<Review, Long> {
+    @Query("select count(r) from Review r where r.book = ?1 and r.isDeleted = false")
+    long countByBook(Book book);
     @Transactional
     @Modifying
     @Query("update Review r set r.isDeleted = true where r.id = ?1")
