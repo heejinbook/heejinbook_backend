@@ -1,6 +1,7 @@
 package com.book.heejinbook.service;
 
 import com.book.heejinbook.dto.review.request.RegisterReviewRequest;
+import com.book.heejinbook.dto.review.response.DetailReviewResponse;
 import com.book.heejinbook.dto.review.response.ReviewListResponse;
 import com.book.heejinbook.dto.review.response.ReviewSwiperResponse;
 import com.book.heejinbook.dto.vo.PaginationResponse;
@@ -79,6 +80,11 @@ public class ReviewService {
 
         validRegisterUser(user.getId(), review.getUser().getId());
         reviewRepository.updateIsDeletedById(reviewId);
+    }
+
+    public DetailReviewResponse getDetailReview(Long reviewId) {
+        Review review = validReview(reviewId);
+        return DetailReviewResponse.from(review);
     }
 
     private User validUser(Long userId) {
