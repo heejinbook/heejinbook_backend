@@ -37,6 +37,7 @@ public class BookController {
         return ApiUtils.success(HttpStatus.OK, "북 리스트 조회 성공", bookService.getList(bookListRequest, pageable));
     }
 
+    @Operation(summary = "책 상세 조회")
     @GetMapping("/{book_id}")
     public Response<DetailBookResponse> getDetailBook(@PathVariable("book_id") Long bookId) {
 
