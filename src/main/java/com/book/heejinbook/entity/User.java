@@ -15,9 +15,9 @@ import java.time.Instant;
 @Getter
 @Setter
 @Entity
+@DynamicInsert
 @NoArgsConstructor
 @AllArgsConstructor
-@DynamicInsert
 @Builder
 @Table(name = "users")
 public class User {

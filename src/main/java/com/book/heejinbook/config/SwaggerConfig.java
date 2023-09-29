@@ -1,12 +1,15 @@
 package com.book.heejinbook.config;
 
+import com.book.heejinbook.dto.vo.CustomPageableRequest;
 import com.fasterxml.classmate.TypeResolver;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
+import springfox.documentation.schema.AlternateTypeRules;
 import springfox.documentation.service.ApiInfo;
 import springfox.documentation.service.ApiKey;
 import springfox.documentation.service.AuthorizationScope;
@@ -33,7 +36,10 @@ public class SwaggerConfig {
                 .build()
                 .apiInfo(apiInfo())
                 .consumes(Collections.singleton(MediaType.MULTIPART_FORM_DATA_VALUE))
-                .produces(Collections.singleton(MediaType.APPLICATION_JSON_VALUE));
+                .produces(Collections.singleton(MediaType.APPLICATION_JSON_VALUE))
+                .alternateTypeRules(AlternateTypeRules.newRule(typeResolver.resolve(Pageable.class), typeResolver.resolve(CustomPageableRequest.class)));
+
+
     }
 
     private ApiInfo apiInfo() {
