@@ -50,3 +50,7 @@ cloud:
     credentials:
       accessKey: ENC(2ZAyIpTDzAmMhq59ZabZctFKhCcuWSaUpyLsUA/8z8c=)
       secretKey: ENC(RwmAKGYQSvwVaxY1MmSHuAyW5wLWc2Wwor/u1m7V/gojv5G1f7ntAYGe8jHStSqGb/M+5tSkLrE=)
+
+#kakaoLogin
+kakao:
+  kakaoClientId: ENC(KEuX4dxmnX4zNf2DaN/7AScvH265DnE5EUBmFf2edAScwbIwccemuPNj/Iew497p)

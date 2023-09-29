@@ -1,6 +1,9 @@
 package com.book.heejinbook.service;
 
+import com.book.heejinbook.dto.user.request.KakaoLoginRequest;
 import com.book.heejinbook.dto.user.request.LoginRequest;
+import com.book.heejinbook.dto.user.response.KakaoTokenResponse;
+import com.book.heejinbook.dto.user.response.KakaoUserInfoResponse;
 import com.book.heejinbook.dto.user.response.LoginResponse;
 import com.book.heejinbook.dto.user.response.MyInfoResponse;
 import com.book.heejinbook.entity.User;
@@ -14,17 +17,25 @@ import com.book.heejinbook.security.Auth;
 import com.book.heejinbook.security.AuthHolder;
 import com.book.heejinbook.security.TokenProvider;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.*;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
 import java.io.IOException;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
 public class UserService {
+
+    @Value("${kakao.kakaoClientId}")
+    private String kakaoClientId;
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
@@ -33,7 +44,7 @@ public class UserService {
 
 
     @Transactional
-    public String  signup(SignupRequest signupRequest) {
+    public String signup(SignupRequest signupRequest) {
         checkDuplicateEmail(signupRequest.getEmail());
         checkConfirmPassword(signupRequest.getPassword(), signupRequest.getPasswordCheck());
         User user = User.from(signupRequest, passwordEncoder.encode(signupRequest.getPassword()));
@@ -44,11 +55,46 @@ public class UserService {
     }
 
     public LoginResponse login(LoginRequest loginRequest) {
-        User user = userRepository.findByEmail(loginRequest.getEmail()).orElseThrow(() ->new CustomException(UserErrorCode.NOT_FOUND_USER));
+        User user = validUserByEmail(loginRequest.getEmail());
         checkPassword(loginRequest.getPassword(), user.getPassword());
         String accessToken = TokenProvider.createToken(user);
 
         return LoginResponse.from(user, accessToken);
+    }
+
+    public LoginResponse kakaoLogin(KakaoLoginRequest kakaoLoginRequest) {
+
+        RestTemplate restTemplate = new RestTemplate();
+        HttpHeaders httpHeaders = new HttpHeaders();
+        String redirectUrl = "http://localhost:8080/api/user/kakao/callback";
+
+        KakaoTokenResponse kakaoTokenResponse = restTemplate.postForObject("https://kauth.kakao.com/oauth/token?grant_type=authorization_code&client_id=" + kakaoClientId + "&redirect_uri=" + redirectUrl + "&code=" + kakaoLoginRequest.getCode(), null, KakaoTokenResponse.class);
+        if (kakaoTokenResponse == null) throw new CustomException(UserErrorCode.FAIL_KAKAO_LOGIN);
+        httpHeaders.setBearerAuth(kakaoTokenResponse.getAccess_token());
+
+        HttpEntity<String> entity = new HttpEntity<>(httpHeaders);
+        ResponseEntity<KakaoUserInfoResponse> response = restTemplate.exchange("https://kapi.kakao.com/v2/user/me", HttpMethod.GET, entity, KakaoUserInfoResponse.class);
+
+        if (response.getStatusCode() == HttpStatus.OK) {
+            KakaoUserInfoResponse kakaoUserInfoResponse = response.getBody();
+            Optional<User> user = userRepository.findByEmail(Objects.requireNonNull(kakaoUserInfoResponse).getKakao_account().getEmail());
+            if (user.isEmpty()) {
+                String password = passwordEncoder.encode(kakaoUserInfoResponse.getId());
+                User saveUser = userRepository.save(User.builder()
+                                .email(kakaoUserInfoResponse.getKakao_account().getEmail())
+                                .nickname(kakaoUserInfoResponse.getProperties().getNickname())
+                                .profileUrl(kakaoUserInfoResponse.getProperties().getProfile_image())
+                                .password(password)
+                                .isDeleted(false)
+                                .build()
+                );
+                String accessToken = TokenProvider.createToken(saveUser);
+                return LoginResponse.from(saveUser, accessToken);
+            }
+            String accessToken = TokenProvider.createToken(user.get());
+            return LoginResponse.from(user.get(), accessToken);
+        }
+        throw new CustomException(UserErrorCode.FAIL_KAKAO_LOGIN);
     }
 
     public MyInfoResponse getMyInfo() {
@@ -84,5 +130,9 @@ public class UserService {
             throw new CustomException(FileErrorCode.FILE_UPLOAD_FAILED);
         }
         return null;
+    }
+
+    private User validUserByEmail(String email) {
+        return userRepository.findByEmail(email).orElseThrow(() ->new CustomException(UserErrorCode.NOT_FOUND_USER));
     }
 }
