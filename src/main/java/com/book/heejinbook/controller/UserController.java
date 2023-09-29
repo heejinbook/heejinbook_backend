@@ -1,5 +1,7 @@
 package com.book.heejinbook.controller;
 
+import com.book.heejinbook.dto.comment.response.CommentListResponse;
+import com.book.heejinbook.dto.review.response.ReviewSwiperResponse;
 import com.book.heejinbook.dto.user.request.KakaoLoginRequest;
 import com.book.heejinbook.dto.user.request.LoginRequest;
 import com.book.heejinbook.dto.user.request.SignupRequest;
@@ -15,6 +17,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -49,5 +53,19 @@ public class UserController {
     @Operation(summary = "내 정보 조회 API", description = "토큰 체크 용")
     public Response<MyInfoResponse> getMyInfo() {
         return ApiUtils.success(HttpStatus.OK, "내 정보 조회 성공", userService.getMyInfo());
+    }
+
+    @Auth
+    @GetMapping("/my-info/reviews")
+    @Operation(summary = "내가 작성한 리뷰 조회 API")
+    public Response<List<ReviewSwiperResponse>> getMyReview() {
+        return ApiUtils.success(HttpStatus.OK, "내 정보 조회 성공", userService.getMyReviews());
+    }
+
+    @Auth
+    @GetMapping("/my-info/comments")
+    @Operation(summary = "내가 작성한 댓글 조회 API")
+    public Response<List<CommentListResponse>> getMyComment() {
+        return ApiUtils.success(HttpStatus.OK, "내 정보 조회 성공", userService.getMyComments());
     }
 }

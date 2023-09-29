@@ -1,16 +1,22 @@
 package com.book.heejinbook.service;
 
+import com.book.heejinbook.dto.comment.response.CommentListResponse;
+import com.book.heejinbook.dto.review.response.ReviewSwiperResponse;
 import com.book.heejinbook.dto.user.request.KakaoLoginRequest;
 import com.book.heejinbook.dto.user.request.LoginRequest;
 import com.book.heejinbook.dto.user.response.KakaoTokenResponse;
 import com.book.heejinbook.dto.user.response.KakaoUserInfoResponse;
 import com.book.heejinbook.dto.user.response.LoginResponse;
 import com.book.heejinbook.dto.user.response.MyInfoResponse;
+import com.book.heejinbook.entity.Comment;
+import com.book.heejinbook.entity.Review;
 import com.book.heejinbook.entity.User;
 import com.book.heejinbook.enums.FilePath;
 import com.book.heejinbook.error.CustomException;
 import com.book.heejinbook.error.domain.FileErrorCode;
 import com.book.heejinbook.error.domain.UserErrorCode;
+import com.book.heejinbook.repository.CommentRepository;
+import com.book.heejinbook.repository.ReviewRepository;
 import com.book.heejinbook.repository.UserRepository;
 import com.book.heejinbook.dto.user.request.SignupRequest;
 import com.book.heejinbook.security.Auth;
@@ -26,9 +32,11 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
 import java.io.IOException;
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -40,7 +48,8 @@ public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final AwsS3Service awsS3Service;
-
+    private final ReviewRepository reviewRepository;
+    private final CommentRepository commentRepository;
 
 
     @Transactional
@@ -101,6 +110,19 @@ public class UserService {
         User user = userRepository.findById(AuthHolder.getUserId()).orElseThrow(() -> new CustomException(UserErrorCode.NOT_FOUND_USER));
         return MyInfoResponse.from(user);
     }
+
+    public List<ReviewSwiperResponse> getMyReviews() {
+        User user = userRepository.findById(AuthHolder.getUserId()).orElseThrow(() -> new CustomException(UserErrorCode.NOT_FOUND_USER));
+        List<Review> reviews = reviewRepository.findAllByUser(user);
+        return reviews.stream().map(ReviewSwiperResponse::from).collect(Collectors.toList());
+    }
+
+    public List<CommentListResponse> getMyComments() {
+        User user = userRepository.findById(AuthHolder.getUserId()).orElseThrow(() -> new CustomException(UserErrorCode.NOT_FOUND_USER));
+        List<Comment> comments = commentRepository.findAllByUser(user);
+        return comments.stream().map(CommentListResponse::from).collect(Collectors.toList());
+    }
+
 
     private void checkDuplicateEmail(String email) {
         if (userRepository.existsByEmail(email)) {

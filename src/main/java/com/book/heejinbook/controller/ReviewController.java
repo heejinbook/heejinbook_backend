@@ -10,6 +10,8 @@ import com.book.heejinbook.dto.vo.Response;
 import com.book.heejinbook.security.Auth;
 import com.book.heejinbook.service.ReviewService;
 import com.book.heejinbook.utils.ApiUtils;
+import io.swagger.annotations.Api;
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -20,12 +22,14 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/reviews")
+@Api(tags = "리뷰 API")
 public class ReviewController {
 
     private final ReviewService reviewService;
 
     @Auth
     @PostMapping("/{book_id}")
+    @Operation(summary = "리뷰 등록")
     public Response<Void> registerReview(@PathVariable("book_id") Long bookId,
                                          @RequestBody RegisterReviewRequest registerReviewRequest) {
         reviewService.registerReview(bookId, registerReviewRequest);
@@ -33,16 +37,19 @@ public class ReviewController {
     }
 
     @GetMapping("/swiper/{book_id}")
+    @Operation(summary = "swiper 리뷰 리스트 조회 (랜덤으로 내려감)")
     public Response<List<ReviewSwiperResponse>> getSwiperList(@PathVariable("book_id") Long bookId, @RequestParam Integer size) {
         return ApiUtils.success(HttpStatus.OK, "리뷰 조회 완료", reviewService.getSwiperList(bookId, size));
     }
     @GetMapping("/list/{book_id}")
+    @Operation(summary = "리뷰 리스트 페이지네이션 조회")
     public Response<PaginationResponse<ReviewListResponse>> getList(@PathVariable("book_id") Long bookId, Pageable pageable) {
         return ApiUtils.success(HttpStatus.OK, "리뷰 조회 완료", reviewService.getList(bookId, pageable));
     }
 
     @Auth
     @PutMapping("/{review_id}")
+    @Operation(summary = "리뷰 수정")
     public Response<Void> changeReview(@PathVariable("review_id")Long reviewId,
                                        @RequestBody RegisterReviewRequest registerReviewRequest) {
         reviewService.changeReview(reviewId, registerReviewRequest);
@@ -51,12 +58,14 @@ public class ReviewController {
 
     @Auth
     @DeleteMapping("/{review_id}")
+    @Operation(summary = "리뷰 삭제")
     public Response<Void> deleteReview(@PathVariable("review_id")Long reviewId) {
         reviewService.deleteReview(reviewId);
         return ApiUtils.success(HttpStatus.OK, "리뷰 삭제 완료", null);
     }
 
     @GetMapping("/{review_id}")
+    @Operation(summary = "리뷰 상세 조회")
     public Response<DetailReviewResponse> detailReview(@PathVariable("review_id") Long reviewId) {
         return ApiUtils.success(HttpStatus.OK, "리뷰 조회 완료", reviewService.getDetailReview(reviewId));
     }
