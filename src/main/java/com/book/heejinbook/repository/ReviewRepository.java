@@ -3,6 +3,7 @@ package com.book.heejinbook.repository;
 import com.book.heejinbook.dto.review.response.ReviewListResponse;
 import com.book.heejinbook.entity.Book;
 import com.book.heejinbook.entity.Review;
+import com.book.heejinbook.entity.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -11,7 +12,10 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 public interface ReviewRepository extends JpaRepository<Review, Long> {
+    List<Review> findAllByUser(User user);
     @Query("select count(r) from Review r where r.book = ?1 and r.isDeleted = false")
     long countByBook(Book book);
     @Transactional
