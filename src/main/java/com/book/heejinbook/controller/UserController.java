@@ -1,5 +1,6 @@
 package com.book.heejinbook.controller;
 
+import com.book.heejinbook.dto.user.request.KakaoLoginRequest;
 import com.book.heejinbook.dto.user.request.LoginRequest;
 import com.book.heejinbook.dto.user.request.SignupRequest;
 import com.book.heejinbook.dto.user.response.LoginResponse;
@@ -36,6 +37,11 @@ public class UserController {
     @Operation(summary = "로그인 API", description = "")
     public Response<LoginResponse> login(@RequestBody LoginRequest loginRequest) {
         return ApiUtils.success(HttpStatus.OK, "로그인 성공", userService.login(loginRequest));
+    }
+
+    @PostMapping("/kakao/login")
+    public Response<LoginResponse> kakaoLogin(@RequestBody KakaoLoginRequest kakaoLoginRequest) {
+        return ApiUtils.success(HttpStatus.OK, "로그인 성공", userService.kakaoLogin(kakaoLoginRequest));
     }
 
     @Auth
