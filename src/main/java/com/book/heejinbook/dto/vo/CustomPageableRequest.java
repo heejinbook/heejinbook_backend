@@ -13,10 +13,10 @@ import lombok.Setter;
 
 public class CustomPageableRequest {
 
-    @ApiModelProperty(value = "현재 페이지", required = true, example = "0")
+    @ApiModelProperty(value = "현재 페이지 (0부터 시작)", required = true, example = "0")
     private Integer page;
     @ApiModelProperty(value = "조회할 개수", required = true, example = "10")
     private Integer size;
-    @ApiModelProperty(value = "정렬 타입", example = "lexically")
+    @ApiModelProperty(value = "책일때 가나다: title,asc 리뷰개수순: r.id,desc 리뷰일 때 id,desc", example = "lexically")
     private String sort;
 }
