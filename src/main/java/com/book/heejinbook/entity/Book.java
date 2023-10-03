@@ -45,6 +45,14 @@ public class Book {
     @Column(name = "thumbnail_url")
     private String thumbnailUrl;
 
+    @Size(max = 45)
+    @Column(name = "isbn")
+    private String isbn;
+
+    @Lob
+    @Column(name = "publisher")
+    private String publisher;
+
     public static Book from(KakaoBookResponse.Document document) {
 
         Random random = new Random();
