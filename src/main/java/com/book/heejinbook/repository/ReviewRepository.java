@@ -27,7 +27,7 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
     Page<Review> findRandomReviews(@Param("book") Book book, Pageable pageable);
 
     @Query("SELECT new com.book.heejinbook.dto.review.response.ReviewListResponse " +
-            "(r.id ,r.user.nickname, r.title, r.contents, r.createdAt) " +
+            "(r.id ,r.user.nickname,r.user.profileUrl, r.title, r.contents, r.createdAt) " +
             "FROM Review r " +
             "JOIN Book b " +
             "ON b = :book " +
