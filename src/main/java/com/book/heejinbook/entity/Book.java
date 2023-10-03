@@ -1,11 +1,15 @@
 package com.book.heejinbook.entity;
 
 import com.book.heejinbook.dto.book.response.KakaoBookResponse;
+import com.book.heejinbook.utils.DateUtils;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.text.ParseException;
+import java.time.Instant;
 import java.util.Random;
 
 @Getter
@@ -45,6 +49,17 @@ public class Book {
     @Column(name = "thumbnail_url")
     private String thumbnailUrl;
 
+    @Size(max = 45)
+    @Column(name = "isbn")
+    private String isbn;
+
+    @Lob
+    @Column(name = "publisher")
+    private String publisher;
+
+    @Column(name = "release_date")
+    private Instant releaseDate;
+
     public static Book from(KakaoBookResponse.Document document) {
 
         Random random = new Random();
@@ -57,6 +72,9 @@ public class Book {
                 .category(category)
                 .description(document.getContents())
                 .thumbnailUrl(document.getThumbnail())
+                .isbn(document.getIsbn())
+                .publisher(document.getPublisher())
+                .releaseDate(DateUtils.convertToInstant(document.getDatetime()))
                 .build();
     }
 

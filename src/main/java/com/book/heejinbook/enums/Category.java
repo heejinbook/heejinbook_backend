@@ -1,16 +1,16 @@
 package com.book.heejinbook.enums;
 
 public enum Category {
-    소설(1),
-    에세이(2),
-    자서전(3),
-    역사(4),
-    과학(5),
-    자연(6),
-    로맨스(7),
-    추리(8),
+    로맨스(1),
+    추리(2),
+    에세이(3),
+    고전(4),
+    수필(5),
+    SF(6),
+    무협(7),
+    시(8),
     판타지(9),
-    공상과학(10);
+    공포(10);
 
     private final long categoryId;
 
