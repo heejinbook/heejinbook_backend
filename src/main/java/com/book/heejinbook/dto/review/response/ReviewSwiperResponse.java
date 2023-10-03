@@ -14,8 +14,10 @@ import lombok.NoArgsConstructor;
 public class ReviewSwiperResponse {
 
     private Long reviewId;
+    private Long bookId;
     private String reviewAuthor;
     private String reviewTitle;
+    private String reviewPhrase;
     private String reviewAuthorProfileUrl;
     private String reviewContents;
     private String reviewCreatedAt;
@@ -27,7 +29,9 @@ public class ReviewSwiperResponse {
                 .reviewAuthorProfileUrl(review.getUser().getProfileUrl())
                 .reviewTitle(review.getTitle())
                 .reviewContents(review.getContents())
+                .reviewPhrase(review.getPhrase())
                 .reviewCreatedAt(DateUtils.convertToString(review.getCreatedAt()))
+                .bookId(review.getBook().getId())
                 .build();
     }
 

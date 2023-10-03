@@ -23,11 +23,11 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
     @Query("update Review r set r.isDeleted = true where r.id = ?1")
     void updateIsDeletedById(Long id);
 
-    @Query("SELECT r FROM Review r JOIN FETCH Book b on b=:book WHERE r.isDeleted = false")
+    @Query("SELECT r FROM Review r JOIN FETCH Book b on b=:book WHERE r.isDeleted = false ORDER BY function('rand') ")
     Page<Review> findRandomReviews(@Param("book") Book book, Pageable pageable);
 
     @Query("SELECT new com.book.heejinbook.dto.review.response.ReviewListResponse " +
-            "(r.id ,r.user.nickname,r.user.profileUrl, r.title, r.contents, r.createdAt) " +
+            "(r.id ,r.user.nickname,r.user.profileUrl, r.title, r.contents, r.phrase, r.createdAt) " +
             "FROM Review r " +
             "JOIN Book b " +
             "ON b = :book " +
