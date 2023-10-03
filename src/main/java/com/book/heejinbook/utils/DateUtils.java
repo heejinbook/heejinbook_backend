@@ -1,5 +1,8 @@
 package com.book.heejinbook.utils;
 
+import com.book.heejinbook.error.CustomException;
+import com.book.heejinbook.error.domain.BookErrorCode;
+
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -26,10 +29,21 @@ public class DateUtils {
         return formatter.format(inputDate);
     }
 
+    public static String convertToStringBook(Instant inputDate) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy.MM.dd")
+                .withZone(ZoneId.systemDefault());
+        return formatter.format(inputDate);
+    }
+
     public static String convertToStringSecond(Timestamp inputDate) {
         String pattern = "yyyy.MM.dd hh:mm:ss";
         SimpleDateFormat sdf = new SimpleDateFormat(pattern);
         return sdf.format(inputDate);
+    }
+
+    public static Instant convertToInstant(String dateString) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
+        return Instant.from(formatter.parse(dateString));
     }
 
 }
