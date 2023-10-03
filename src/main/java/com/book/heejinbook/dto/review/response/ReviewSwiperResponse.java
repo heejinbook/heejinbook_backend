@@ -16,6 +16,7 @@ public class ReviewSwiperResponse {
     private Long reviewId;
     private String reviewAuthor;
     private String reviewTitle;
+    private String reviewAuthorProfileUrl;
     private String reviewContents;
     private String reviewCreatedAt;
 
@@ -23,6 +24,7 @@ public class ReviewSwiperResponse {
         return ReviewSwiperResponse.builder()
                 .reviewId(review.getId())
                 .reviewAuthor(review.getUser().getNickname())
+                .reviewAuthorProfileUrl(review.getUser().getProfileUrl())
                 .reviewTitle(review.getTitle())
                 .reviewContents(review.getContents())
                 .reviewCreatedAt(DateUtils.convertToString(review.getCreatedAt()))

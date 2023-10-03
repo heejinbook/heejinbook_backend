@@ -17,13 +17,15 @@ public class ReviewListResponse {
 
     private Long reviewId;
     private String reviewAuthor;
+    private String reviewAuthorProfileUrl;
     private String reviewTitle;
     private String reviewContents;
     private String reviewCreatedAt;
 
-    public ReviewListResponse(Long reviewId,String reviewAuthor, String reviewTitle, String reviewContents, Instant reviewCreatedAt) {
+    public ReviewListResponse(Long reviewId, String reviewAuthor, String reviewAuthorProfileUrl, String reviewTitle, String reviewContents, Instant reviewCreatedAt) {
         this.reviewId = reviewId;
         this.reviewAuthor = reviewAuthor;
+        this.reviewAuthorProfileUrl = reviewAuthorProfileUrl;
         this.reviewTitle = reviewTitle;
         this.reviewContents = reviewContents;
         this.reviewCreatedAt = DateUtils.convertToString(reviewCreatedAt);
