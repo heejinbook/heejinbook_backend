@@ -70,6 +70,7 @@ public class ReviewService {
         validRegisterUser(user.getId(), review.getUser().getId());
         review.setTitle(registerReviewRequest.getTitle());
         review.setContents(registerReviewRequest.getContents());
+        review.setPhrase(registerReviewRequest.getPhrase());
         reviewRepository.save(review);
 
     }

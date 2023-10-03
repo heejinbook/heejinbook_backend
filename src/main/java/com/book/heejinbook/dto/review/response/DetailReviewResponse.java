@@ -18,6 +18,7 @@ public class DetailReviewResponse {
     private String reviewAuthorProfileUrl;
     private String reviewTitle;
     private String reviewContents;
+    private String reviewPhrase;
     private String reviewCreatedAt;
 
     public static DetailReviewResponse from(Review review) {
@@ -27,6 +28,7 @@ public class DetailReviewResponse {
                 .reviewAuthorProfileUrl(review.getUser().getProfileUrl())
                 .reviewTitle(review.getTitle())
                 .reviewContents(review.getContents())
+                .reviewPhrase(review.getPhrase())
                 .reviewCreatedAt(DateUtils.convertToString(review.getCreatedAt()))
                 .build();
     }
