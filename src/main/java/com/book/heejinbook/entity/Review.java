@@ -50,6 +50,10 @@ public class Review {
     @Column(name = "is_deleted")
     private Boolean isDeleted;
 
+    @Lob
+    @Column
+    private String phrase;
+
     @CreationTimestamp
     @Column(name = "created_at", nullable = false, updatable = false)
     private Instant createdAt;
@@ -64,6 +68,7 @@ public class Review {
                 .user(user)
                 .title(registerReviewRequest.getTitle())
                 .contents(registerReviewRequest.getContents())
+                .phrase(registerReviewRequest.getPhrase())
                 .isDeleted(false)
                 .build();
     }
