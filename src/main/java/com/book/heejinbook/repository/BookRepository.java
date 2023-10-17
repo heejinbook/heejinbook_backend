@@ -19,7 +19,7 @@ public interface BookRepository extends JpaRepository<Book, Long> {
             "ON r.book = b " +
             "AND r.isDeleted = false " +
             "WHERE (:#{#request.category} = 0L OR :#{#request.category} IS NULL OR c.id = :#{#request.category}) " +
-            "AND (:#{#request.searchKeyword} IS NULL OR LOWER(b.title) LIKE CONCAT('%', LOWER(:#{#request.searchKeyword}), '%'))" +
+            "AND (:#{#request.searchKeyword} IS NULL OR LOWER(b.title) LIKE CONCAT('%', LOWER(:#{#request.searchKeyword}), '%') OR LOWER(b.author) LIKE CONCAT('%', LOWER(:#{#request.searchKeyword}), '%')) " +
             "GROUP BY b.id, b.title, b.author, b.thumbnailUrl"
     )
     Page<BookListResponse> findByBookList(
