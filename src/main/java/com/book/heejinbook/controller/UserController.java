@@ -30,11 +30,9 @@ public class UserController {
 
     @PostMapping(value = "/signup", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @Operation(summary = "회원 가입 API", description = "폼데이터로 요청")
-    public Response<Void> signup(@ModelAttribute SignupRequest signupRequest) {
+    public Response<LoginResponse> signup(@ModelAttribute SignupRequest signupRequest) {
 
-        String email = userService.signup(signupRequest);
-
-        return ApiUtils.success(HttpStatus.CREATED, email + " 회원 가입 성공", null);
+        return ApiUtils.success(HttpStatus.CREATED, "회원 가입 성공", userService.signup(signupRequest));
     }
 
     @PostMapping("/login")
