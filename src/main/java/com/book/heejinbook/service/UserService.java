@@ -53,14 +53,16 @@ public class UserService {
 
 
     @Transactional
-    public String signup(SignupRequest signupRequest) {
+    public LoginResponse signup(SignupRequest signupRequest) {
         checkDuplicateEmail(signupRequest.getEmail());
         checkConfirmPassword(signupRequest.getPassword(), signupRequest.getPasswordCheck());
         User user = User.from(signupRequest, passwordEncoder.encode(signupRequest.getPassword()));
 
         userRepository.save(user);
         user.setProfileUrl(uploadImageFile(signupRequest.getProfileFile(), user));
-        return user.getEmail();
+        String accessToken = TokenProvider.createToken(user);
+
+        return LoginResponse.from(user, accessToken);
     }
 
     public LoginResponse login(LoginRequest loginRequest) {
