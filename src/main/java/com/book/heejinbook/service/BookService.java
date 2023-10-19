@@ -7,10 +7,15 @@ import com.book.heejinbook.dto.book.response.DetailBookResponse;
 import com.book.heejinbook.dto.book.response.KakaoBookResponse;
 import com.book.heejinbook.dto.vo.PaginationResponse;
 import com.book.heejinbook.entity.Book;
+import com.book.heejinbook.entity.User;
 import com.book.heejinbook.error.CustomException;
 import com.book.heejinbook.error.domain.BookErrorCode;
+import com.book.heejinbook.error.domain.UserErrorCode;
 import com.book.heejinbook.repository.BookRepository;
+import com.book.heejinbook.repository.LibraryRepository;
 import com.book.heejinbook.repository.ReviewRepository;
+import com.book.heejinbook.repository.UserRepository;
+import com.book.heejinbook.security.AuthHolder;
 import com.book.heejinbook.utils.PaginationBuilder;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -30,6 +35,8 @@ import java.util.stream.Collectors;
 public class BookService {
     private final ReviewRepository reviewRepository;
     private final BookRepository bookRepository;
+    private final LibraryRepository libraryRepository;
+    private final UserRepository userRepository;
 
     @Value("${kakao.kakaoClientId}")
     private String kakaoClientId;
@@ -67,11 +74,18 @@ public class BookService {
     public DetailBookResponse getDetail(Long bookId) {
 
         Book book = validBook(bookId);
+        User user = validUser(AuthHolder.getUserId());
         Long reviewCount = reviewRepository.countByBook(book);
-        return DetailBookResponse.from(book, reviewCount);
+        Boolean isLibrary = libraryRepository.existsByBookAndUser(book, user);
+        return DetailBookResponse.from(book, reviewCount, isLibrary);
     }
 
     private Book validBook(Long bookId) {
         return bookRepository.findById(bookId).orElseThrow(() -> new CustomException(BookErrorCode.NOT_FOUND_BOOK));
     }
+
+    private User validUser(Long userId) {
+        return userRepository.findById(userId).orElseThrow(() -> new CustomException(UserErrorCode.NOT_FOUND_USER));
+    }
+
 }
