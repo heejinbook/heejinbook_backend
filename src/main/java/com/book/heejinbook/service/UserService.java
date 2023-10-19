@@ -75,7 +75,7 @@ public class UserService {
 
         RestTemplate restTemplate = new RestTemplate();
         HttpHeaders httpHeaders = new HttpHeaders();
-        String redirectUrl = "http://localhost:8080/api/user/kakao/callback";
+        String redirectUrl = "http://localhost:5173/kakao";
 
         KakaoTokenResponse kakaoTokenResponse = restTemplate.postForObject("https://kauth.kakao.com/oauth/token?grant_type=authorization_code&client_id=" + kakaoClientId + "&redirect_uri=" + redirectUrl + "&code=" + kakaoLoginRequest.getCode(), null, KakaoTokenResponse.class);
         if (kakaoTokenResponse == null) throw new CustomException(UserErrorCode.FAIL_KAKAO_LOGIN);
