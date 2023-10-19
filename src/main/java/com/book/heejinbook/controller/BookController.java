@@ -7,6 +7,7 @@ import com.book.heejinbook.dto.book.response.DetailBookResponse;
 import com.book.heejinbook.dto.book.response.KakaoBookResponse;
 import com.book.heejinbook.dto.vo.PaginationResponse;
 import com.book.heejinbook.dto.vo.Response;
+import com.book.heejinbook.security.Auth;
 import com.book.heejinbook.service.BookService;
 import com.book.heejinbook.utils.ApiUtils;
 import io.swagger.annotations.Api;
@@ -37,6 +38,7 @@ public class BookController {
         return ApiUtils.success(HttpStatus.OK, "북 리스트 조회 성공", bookService.getList(bookListRequest, pageable));
     }
 
+    @Auth
     @Operation(summary = "책 상세 조회")
     @GetMapping("/{book_id}")
     public Response<DetailBookResponse> getDetailBook(@PathVariable("book_id") Long bookId) {
