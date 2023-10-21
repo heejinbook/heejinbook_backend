@@ -38,7 +38,7 @@ public class LibraryController {
 
         libraryService.deleteLibrary(bookId);
 
-        return ApiUtils.success(HttpStatus.OK, "내 서재에 담기 및 취소 성공", null);
+        return ApiUtils.success(HttpStatus.OK, "내 서재 취소 성공", null);
     }
 
     @Auth
