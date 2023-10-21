@@ -45,6 +45,7 @@ public class LibraryService {
         }
     }
 
+    @Transactional
     public void deleteLibrary(Long bookId) {
 
         User user = validUser(AuthHolder.getUserId());
