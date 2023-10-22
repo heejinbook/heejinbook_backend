@@ -1,6 +1,7 @@
 package com.book.heejinbook.controller;
 
 import com.book.heejinbook.dto.comment.response.CommentListResponse;
+import com.book.heejinbook.dto.review.response.MyReviewResponse;
 import com.book.heejinbook.dto.review.response.ReviewSwiperResponse;
 import com.book.heejinbook.dto.user.request.KakaoLoginRequest;
 import com.book.heejinbook.dto.user.request.LoginRequest;
@@ -56,7 +57,7 @@ public class UserController {
     @Auth
     @GetMapping("/my-info/reviews")
     @Operation(summary = "내가 작성한 리뷰 조회 API")
-    public Response<List<ReviewSwiperResponse>> getMyReview() {
+    public Response<List<MyReviewResponse>> getMyReview() {
         return ApiUtils.success(HttpStatus.OK, "내 정보 조회 성공", userService.getMyReviews());
     }
 
