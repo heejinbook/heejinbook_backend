@@ -39,6 +39,9 @@ public class ReviewService {
 
         User user = validUser(AuthHolder.getUserId());
         Book book = validBook(bookId);
+        if (reviewRepository.existsByBookAndUser(book,user)) {
+            throw new CustomException(ReviewErrorCode.ALREADY_WRITTEN_REVIEW);
+        }
 
         reviewRepository.save(Review.from(registerReviewRequest, book, user));
     }
