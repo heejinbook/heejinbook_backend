@@ -14,12 +14,14 @@ import lombok.NoArgsConstructor;
 public class CommentListResponse {
 
     private Long commentId;
+    private Long reviewId;
     private String contents;
     private String commentAuthor;
     private String commentCreatedAt;
 
     public static CommentListResponse from(Comment comment) {
         return CommentListResponse.builder()
+                .reviewId(comment.getReview().getId())
                 .commentId(comment.getId())
                 .contents(comment.getContents())
                 .commentAuthor(comment.getUser().getNickname())
