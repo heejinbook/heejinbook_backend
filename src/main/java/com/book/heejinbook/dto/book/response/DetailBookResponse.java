@@ -23,8 +23,9 @@ public class DetailBookResponse {
     private String releaseDate;
     private Long reviewCount;
     private Boolean isLibrary;
+    private Boolean isWriteReview;
 
-    public static DetailBookResponse from(Book book, Long reviewCount, Boolean isLibrary) {
+    public static DetailBookResponse from(Book book, Long reviewCount, Boolean isLibrary, Boolean isWriteReview) {
         return DetailBookResponse.builder()
                 .bookId(book.getId())
                 .title(book.getTitle())
@@ -37,6 +38,7 @@ public class DetailBookResponse {
                 .category(book.getCategory().getName())
                 .reviewCount(reviewCount)
                 .isLibrary(isLibrary)
+                .isWriteReview(isWriteReview)
                 .build();
     }
 

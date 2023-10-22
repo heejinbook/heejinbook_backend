@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 public interface ReviewRepository extends JpaRepository<Review, Long> {
+    boolean existsByBookAndUser(Book book, User user);
     List<Review> findAllByUser(User user);
     @Query("select count(r) from Review r where r.book = ?1 and r.isDeleted = false")
     long countByBook(Book book);
