@@ -10,7 +10,8 @@ import org.springframework.http.HttpStatus;
 public enum ReviewErrorCode implements ErrorCode {
 
     NOT_FOUND_REVIEW(HttpStatus.NOT_FOUND.value(), "리뷰를 찾을 수 없습니다"),
-    FORBIDDEN_REVIEW(HttpStatus.FORBIDDEN.value(), "내가 작성한 리뷰만 삭제및 수정이 가능합니다")
+    FORBIDDEN_REVIEW(HttpStatus.FORBIDDEN.value(), "내가 작성한 리뷰만 삭제및 수정이 가능합니다"),
+    ALREADY_WRITTEN_REVIEW(HttpStatus.CONFLICT.value(), "이미 리뷰를 작성한 회원입니다")
     ;
     
 
