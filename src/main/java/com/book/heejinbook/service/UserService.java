@@ -1,6 +1,7 @@
 package com.book.heejinbook.service;
 
 import com.book.heejinbook.dto.comment.response.CommentListResponse;
+import com.book.heejinbook.dto.review.response.MyReviewResponse;
 import com.book.heejinbook.dto.review.response.ReviewSwiperResponse;
 import com.book.heejinbook.dto.user.request.KakaoLoginRequest;
 import com.book.heejinbook.dto.user.request.LoginRequest;
@@ -113,10 +114,10 @@ public class UserService {
         return MyInfoResponse.from(user);
     }
 
-    public List<ReviewSwiperResponse> getMyReviews() {
+    public List<MyReviewResponse> getMyReviews() {
         User user = userRepository.findById(AuthHolder.getUserId()).orElseThrow(() -> new CustomException(UserErrorCode.NOT_FOUND_USER));
         List<Review> reviews = reviewRepository.findAllByUser(user);
-        return reviews.stream().map(ReviewSwiperResponse::from).collect(Collectors.toList());
+        return reviews.stream().map(MyReviewResponse::from).collect(Collectors.toList());
     }
 
     public List<CommentListResponse> getMyComments() {
