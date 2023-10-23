@@ -15,7 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 public interface ReviewRepository extends JpaRepository<Review, Long> {
-    boolean existsByBookAndUser(Book book, User user);
+    boolean existsByBookAndUserAndIsDeletedFalse(Book book, User user);
     List<Review> findAllByUserAndIsDeletedFalse(User user);
     @Query("select count(r) from Review r where r.book = ?1 and r.isDeleted = false")
     long countByBook(Book book);
@@ -32,7 +32,7 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
             "FROM Review r " +
             "JOIN Book b " +
             "ON b = :book " +
+            "AND b = r.book " +
             "WHERE r.isDeleted = false ")
-
-    Page<ReviewListResponse> findByReviewListAndIsDeletedFalse(Book book, Pageable pageable);
+    Page<ReviewListResponse> findByReviewList(Book book, Pageable pageable);
 }

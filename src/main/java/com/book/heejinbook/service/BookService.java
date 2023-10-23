@@ -77,7 +77,7 @@ public class BookService {
         User user = validUser(AuthHolder.getUserId());
         Long reviewCount = reviewRepository.countByBook(book);
         Boolean isLibrary = libraryRepository.existsByBookAndUser(book, user);
-        Boolean isWriteReview = reviewRepository.existsByBookAndUser(book, user);
+        Boolean isWriteReview = reviewRepository.existsByBookAndUserAndIsDeletedFalse(book, user);
         return DetailBookResponse.from(book, reviewCount, isLibrary, isWriteReview);
     }
 
