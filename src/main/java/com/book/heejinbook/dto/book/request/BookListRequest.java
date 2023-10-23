@@ -22,4 +22,7 @@ public class BookListRequest {
     @ApiModelProperty(value = "장르", required = true, example = "1~10")
     private Long category;
 
+    @ApiModelProperty(value = "책일때 가나다: title,asc 리뷰개수순: r.id,desc 리뷰일 때 id,desc", example = "lexically")
+    private String sort;
+
 }

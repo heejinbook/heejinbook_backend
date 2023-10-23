@@ -5,15 +5,17 @@ import com.book.heejinbook.dto.book.request.KakaoBookDataRequest;
 import com.book.heejinbook.dto.book.response.BookListResponse;
 import com.book.heejinbook.dto.book.response.DetailBookResponse;
 import com.book.heejinbook.dto.book.response.KakaoBookResponse;
+import com.book.heejinbook.dto.vo.CustomPageableRequest;
 import com.book.heejinbook.dto.vo.PaginationResponse;
 import com.book.heejinbook.entity.Book;
 import com.book.heejinbook.entity.User;
 import com.book.heejinbook.error.CustomException;
 import com.book.heejinbook.error.domain.BookErrorCode;
 import com.book.heejinbook.error.domain.UserErrorCode;
-import com.book.heejinbook.repository.BookRepository;
+import com.book.heejinbook.repository.book.BookCustomRepositoryImpl;
+import com.book.heejinbook.repository.book.BookRepository;
 import com.book.heejinbook.repository.LibraryRepository;
-import com.book.heejinbook.repository.ReviewRepository;
+import com.book.heejinbook.repository.review.ReviewRepository;
 import com.book.heejinbook.repository.UserRepository;
 import com.book.heejinbook.security.AuthHolder;
 import com.book.heejinbook.utils.PaginationBuilder;
@@ -37,6 +39,7 @@ public class BookService {
     private final BookRepository bookRepository;
     private final LibraryRepository libraryRepository;
     private final UserRepository userRepository;
+    private final BookCustomRepositoryImpl bookCustomRepository;
 
     @Value("${kakao.kakaoClientId}")
     private String kakaoClientId;
@@ -58,7 +61,7 @@ public class BookService {
 
     public PaginationResponse<BookListResponse> getList(BookListRequest bookListRequest, Pageable pageable) {
 
-        Page<BookListResponse> pageData = bookRepository.findByBookList(bookListRequest, pageable);
+        Page<BookListResponse> pageData = bookCustomRepository.findBookList(bookListRequest, pageable);
 
         return new PaginationBuilder<BookListResponse>()
                 .hasNext(pageData.hasNext())

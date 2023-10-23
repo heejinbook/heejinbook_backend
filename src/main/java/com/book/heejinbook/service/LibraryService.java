@@ -8,12 +8,11 @@ import com.book.heejinbook.error.CustomException;
 import com.book.heejinbook.error.domain.BookErrorCode;
 import com.book.heejinbook.error.domain.LibraryErrorCode;
 import com.book.heejinbook.error.domain.UserErrorCode;
-import com.book.heejinbook.repository.BookRepository;
+import com.book.heejinbook.repository.book.BookRepository;
 import com.book.heejinbook.repository.LibraryRepository;
 import com.book.heejinbook.repository.UserRepository;
 import com.book.heejinbook.security.AuthHolder;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
