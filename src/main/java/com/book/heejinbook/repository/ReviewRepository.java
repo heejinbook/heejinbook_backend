@@ -16,7 +16,7 @@ import java.util.List;
 
 public interface ReviewRepository extends JpaRepository<Review, Long> {
     boolean existsByBookAndUser(Book book, User user);
-    List<Review> findAllByUser(User user);
+    List<Review> findAllByUserAndIsDeletedFalse(User user);
     @Query("select count(r) from Review r where r.book = ?1 and r.isDeleted = false")
     long countByBook(Book book);
     @Transactional
@@ -34,5 +34,5 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
             "ON b = :book " +
             "WHERE r.isDeleted = false ")
 
-    Page<ReviewListResponse> findByReviewList(Book book, Pageable pageable);
+    Page<ReviewListResponse> findByReviewListAndIsDeletedFalse(Book book, Pageable pageable);
 }
