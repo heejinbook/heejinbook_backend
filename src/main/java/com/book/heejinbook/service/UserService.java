@@ -116,7 +116,7 @@ public class UserService {
 
     public List<MyReviewResponse> getMyReviews() {
         User user = userRepository.findById(AuthHolder.getUserId()).orElseThrow(() -> new CustomException(UserErrorCode.NOT_FOUND_USER));
-        List<Review> reviews = reviewRepository.findAllByUser(user);
+        List<Review> reviews = reviewRepository.findAllByUserAndIsDeletedFalse(user);
         return reviews.stream().map(MyReviewResponse::from).collect(Collectors.toList());
     }
 
