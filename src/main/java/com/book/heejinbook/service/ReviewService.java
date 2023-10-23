@@ -39,7 +39,7 @@ public class ReviewService {
 
         User user = validUser(AuthHolder.getUserId());
         Book book = validBook(bookId);
-        if (reviewRepository.existsByBookAndUser(book,user)) {
+        if (reviewRepository.existsByBookAndUserAndIsDeletedFalse(book,user)) {
             throw new CustomException(ReviewErrorCode.ALREADY_WRITTEN_REVIEW);
         }
 
@@ -55,7 +55,7 @@ public class ReviewService {
 
     public PaginationResponse<ReviewListResponse> getList(Long bookId, Pageable pageable) {
         Book book = validBook(bookId);
-        Page<ReviewListResponse> pageData = reviewRepository.findByReviewListAndIsDeletedFalse(book, pageable);
+        Page<ReviewListResponse> pageData = reviewRepository.findByReviewList(book, pageable);
 
         return new PaginationBuilder<ReviewListResponse>()
                 .hasNext(pageData.hasNext())
