@@ -12,6 +12,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.time.Instant;
+import java.util.List;
 
 @Getter
 @Setter
@@ -61,6 +62,13 @@ public class Review {
     @UpdateTimestamp
     @Column(name = "updated_at", insertable = false)
     private Instant updatedAt;
+
+    @OneToMany(mappedBy = "review", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Comment> comments;
+
+    public Long getCommentCount() {
+        return (long) comments.size();
+    }
 
     public static Review from(RegisterReviewRequest registerReviewRequest, Book book, User user) {
         return Review.builder()

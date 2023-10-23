@@ -1,4 +1,4 @@
-package com.book.heejinbook.repository;
+package com.book.heejinbook.repository.comment;
 
 import com.book.heejinbook.entity.Comment;
 import com.book.heejinbook.entity.Review;
@@ -11,12 +11,12 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 public interface CommentRepository extends JpaRepository<Comment, Long> {
-    List<Comment> findAllByUser(User user);
+    List<Comment> findAllByUserAndIsDeletedFalseOrderByIdDesc(User user);
     @Transactional
     @Modifying
     @Query("update Comment c set c.isDeleted = true where c.id = ?1")
     int updateIsDeletedById(Long id);
 
-    List<Comment> findAllByReviewAndIsDeletedFalse(Review review);
+    List<Comment> findAllByReviewAndIsDeletedFalseOrderByIdDesc(Review review);
 
 }

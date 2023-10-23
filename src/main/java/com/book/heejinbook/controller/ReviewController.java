@@ -43,8 +43,8 @@ public class ReviewController {
     }
     @GetMapping("/list/{book_id}")
     @Operation(summary = "리뷰 리스트 페이지네이션 조회")
-    public Response<PaginationResponse<ReviewListResponse>> getList(@PathVariable("book_id") Long bookId, Pageable pageable) {
-        return ApiUtils.success(HttpStatus.OK, "리뷰 조회 완료", reviewService.getList(bookId, pageable));
+    public Response<PaginationResponse<ReviewListResponse>> getList(@PathVariable("book_id") Long bookId, Pageable pageable, @RequestParam(required = false) String sort) {
+        return ApiUtils.success(HttpStatus.OK, "리뷰 조회 완료", reviewService.getList(bookId, pageable, sort));
     }
 
     @Auth

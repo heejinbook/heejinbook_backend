@@ -12,8 +12,9 @@ import com.book.heejinbook.error.CustomException;
 import com.book.heejinbook.error.domain.BookErrorCode;
 import com.book.heejinbook.error.domain.ReviewErrorCode;
 import com.book.heejinbook.error.domain.UserErrorCode;
-import com.book.heejinbook.repository.BookRepository;
-import com.book.heejinbook.repository.ReviewRepository;
+import com.book.heejinbook.repository.book.BookRepository;
+import com.book.heejinbook.repository.review.ReviewCustomRepositoryImpl;
+import com.book.heejinbook.repository.review.ReviewRepository;
 import com.book.heejinbook.repository.UserRepository;
 import com.book.heejinbook.security.AuthHolder;
 import com.book.heejinbook.utils.PaginationBuilder;
@@ -34,6 +35,7 @@ public class ReviewService {
     private final UserRepository userRepository;
     private final BookRepository bookRepository;
     private final ReviewRepository reviewRepository;
+    private final ReviewCustomRepositoryImpl reviewCustomRepository;
 
     public void registerReview(Long bookId, RegisterReviewRequest registerReviewRequest) {
 
@@ -53,9 +55,9 @@ public class ReviewService {
         return randomReviews.getContent().stream().map(ReviewSwiperResponse::from).collect(Collectors.toList());
     }
 
-    public PaginationResponse<ReviewListResponse> getList(Long bookId, Pageable pageable) {
+    public PaginationResponse<ReviewListResponse> getList(Long bookId, Pageable pageable, String sort) {
         Book book = validBook(bookId);
-        Page<ReviewListResponse> pageData = reviewRepository.findByReviewList(book, pageable);
+        Page<ReviewListResponse> pageData = reviewCustomRepository.findReviewList(book, pageable, sort);
 
         return new PaginationBuilder<ReviewListResponse>()
                 .hasNext(pageData.hasNext())

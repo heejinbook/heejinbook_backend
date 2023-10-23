@@ -2,7 +2,6 @@ package com.book.heejinbook.service;
 
 import com.book.heejinbook.dto.comment.response.CommentListResponse;
 import com.book.heejinbook.dto.review.response.MyReviewResponse;
-import com.book.heejinbook.dto.review.response.ReviewSwiperResponse;
 import com.book.heejinbook.dto.user.request.KakaoLoginRequest;
 import com.book.heejinbook.dto.user.request.LoginRequest;
 import com.book.heejinbook.dto.user.response.KakaoTokenResponse;
@@ -16,11 +15,10 @@ import com.book.heejinbook.enums.FilePath;
 import com.book.heejinbook.error.CustomException;
 import com.book.heejinbook.error.domain.FileErrorCode;
 import com.book.heejinbook.error.domain.UserErrorCode;
-import com.book.heejinbook.repository.CommentRepository;
-import com.book.heejinbook.repository.ReviewRepository;
+import com.book.heejinbook.repository.comment.CommentRepository;
+import com.book.heejinbook.repository.review.ReviewRepository;
 import com.book.heejinbook.repository.UserRepository;
 import com.book.heejinbook.dto.user.request.SignupRequest;
-import com.book.heejinbook.security.Auth;
 import com.book.heejinbook.security.AuthHolder;
 import com.book.heejinbook.security.TokenProvider;
 import lombok.RequiredArgsConstructor;
@@ -116,13 +114,13 @@ public class UserService {
 
     public List<MyReviewResponse> getMyReviews() {
         User user = userRepository.findById(AuthHolder.getUserId()).orElseThrow(() -> new CustomException(UserErrorCode.NOT_FOUND_USER));
-        List<Review> reviews = reviewRepository.findAllByUserAndIsDeletedFalse(user);
+        List<Review> reviews = reviewRepository.findAllByUserAndIsDeletedFalseOrderByIdDesc(user);
         return reviews.stream().map(MyReviewResponse::from).collect(Collectors.toList());
     }
 
     public List<CommentListResponse> getMyComments() {
         User user = userRepository.findById(AuthHolder.getUserId()).orElseThrow(() -> new CustomException(UserErrorCode.NOT_FOUND_USER));
-        List<Comment> comments = commentRepository.findAllByUser(user);
+        List<Comment> comments = commentRepository.findAllByUserAndIsDeletedFalseOrderByIdDesc(user);
         return comments.stream().map(CommentListResponse::from).collect(Collectors.toList());
     }
 

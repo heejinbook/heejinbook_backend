@@ -1,4 +1,4 @@
-package com.book.heejinbook.repository;
+package com.book.heejinbook.repository.review;
 
 import com.book.heejinbook.dto.review.response.ReviewListResponse;
 import com.book.heejinbook.entity.Book;
@@ -14,9 +14,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-public interface ReviewRepository extends JpaRepository<Review, Long> {
+public interface ReviewRepository extends JpaRepository<Review, Long>, ReviewCustomRepository {
     boolean existsByBookAndUserAndIsDeletedFalse(Book book, User user);
-    List<Review> findAllByUserAndIsDeletedFalse(User user);
+    List<Review> findAllByUserAndIsDeletedFalseOrderByIdDesc(User user);
     @Query("select count(r) from Review r where r.book = ?1 and r.isDeleted = false")
     long countByBook(Book book);
     @Transactional
@@ -27,12 +27,4 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
     @Query("SELECT r FROM Review r JOIN FETCH Book b on b=:book WHERE r.isDeleted = false ORDER BY function('rand') ")
     Page<Review> findRandomReviews(@Param("book") Book book, Pageable pageable);
 
-    @Query("SELECT new com.book.heejinbook.dto.review.response.ReviewListResponse " +
-            "(r.id ,r.user.nickname,r.user.profileUrl, r.title, r.contents, r.phrase, r.createdAt) " +
-            "FROM Review r " +
-            "JOIN Book b " +
-            "ON b = :book " +
-            "AND b = r.book " +
-            "WHERE r.isDeleted = false ")
-    Page<ReviewListResponse> findByReviewList(Book book, Pageable pageable);
 }

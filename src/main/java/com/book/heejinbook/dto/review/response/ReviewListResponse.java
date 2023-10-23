@@ -22,8 +22,9 @@ public class ReviewListResponse {
     private String reviewContents;
     private String reviewCreatedAt;
     private String reviewPhrase;
+    private Long commentCount;
 
-    public ReviewListResponse(Long reviewId, String reviewAuthor, String reviewAuthorProfileUrl, String reviewTitle, String reviewContents, String reviewPhrase, Instant reviewCreatedAt) {
+    public ReviewListResponse(Long reviewId, String reviewAuthor, String reviewAuthorProfileUrl, String reviewTitle, String reviewContents, Instant reviewCreatedAt, String reviewPhrase,  Long commentCount) {
         this.reviewId = reviewId;
         this.reviewAuthor = reviewAuthor;
         this.reviewAuthorProfileUrl = reviewAuthorProfileUrl;
@@ -31,5 +32,6 @@ public class ReviewListResponse {
         this.reviewContents = reviewContents;
         this.reviewPhrase = reviewPhrase;
         this.reviewCreatedAt = DateUtils.convertToString(reviewCreatedAt);
+        this.commentCount = commentCount;
     }
 }
