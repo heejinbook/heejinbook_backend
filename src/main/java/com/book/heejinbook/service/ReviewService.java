@@ -13,6 +13,7 @@ import com.book.heejinbook.error.domain.BookErrorCode;
 import com.book.heejinbook.error.domain.ReviewErrorCode;
 import com.book.heejinbook.error.domain.UserErrorCode;
 import com.book.heejinbook.repository.book.BookRepository;
+import com.book.heejinbook.repository.comment.CommentRepository;
 import com.book.heejinbook.repository.review.ReviewCustomRepositoryImpl;
 import com.book.heejinbook.repository.review.ReviewRepository;
 import com.book.heejinbook.repository.UserRepository;
@@ -36,6 +37,7 @@ public class ReviewService {
     private final BookRepository bookRepository;
     private final ReviewRepository reviewRepository;
     private final ReviewCustomRepositoryImpl reviewCustomRepository;
+    private final CommentRepository commentRepository;
 
     public void registerReview(Long bookId, RegisterReviewRequest registerReviewRequest) {
 
@@ -90,7 +92,8 @@ public class ReviewService {
 
     public DetailReviewResponse getDetailReview(Long reviewId) {
         Review review = validReview(reviewId);
-        return DetailReviewResponse.from(review);
+        Long commentCount = commentRepository.countByReviewAndIsDeletedFalse(review);
+        return DetailReviewResponse.from(review, commentCount);
     }
 
     private User validUser(Long userId) {

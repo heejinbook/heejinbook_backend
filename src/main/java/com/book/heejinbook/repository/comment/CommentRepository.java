@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 public interface CommentRepository extends JpaRepository<Comment, Long> {
+    long countByReviewAndIsDeletedFalse(Review review);
     List<Comment> findAllByUserAndIsDeletedFalseOrderByIdDesc(User user);
     @Transactional
     @Modifying
