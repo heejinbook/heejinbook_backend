@@ -2,17 +2,15 @@ package com.book.heejinbook.service;
 
 import com.book.heejinbook.dto.comment.request.RegisterCommentRequest;
 import com.book.heejinbook.dto.comment.response.CommentListResponse;
-import com.book.heejinbook.entity.Book;
 import com.book.heejinbook.entity.Comment;
 import com.book.heejinbook.entity.Review;
 import com.book.heejinbook.entity.User;
 import com.book.heejinbook.error.CustomException;
-import com.book.heejinbook.error.domain.BookErrorCode;
 import com.book.heejinbook.error.domain.CommentErrorCode;
 import com.book.heejinbook.error.domain.ReviewErrorCode;
 import com.book.heejinbook.error.domain.UserErrorCode;
-import com.book.heejinbook.repository.CommentRepository;
-import com.book.heejinbook.repository.ReviewRepository;
+import com.book.heejinbook.repository.comment.CommentRepository;
+import com.book.heejinbook.repository.review.ReviewRepository;
 import com.book.heejinbook.repository.UserRepository;
 import com.book.heejinbook.security.AuthHolder;
 import lombok.RequiredArgsConstructor;
@@ -63,7 +61,7 @@ public class CommentService {
 
     public List<CommentListResponse> getListByReview(Long reviewId) {
         Review review = validReview(reviewId);
-        List<Comment> commentsList = commentRepository.findAllByReviewAndIsDeletedFalse(review);
+        List<Comment> commentsList = commentRepository.findAllByReviewAndIsDeletedFalseOrderByIdDesc(review);
         return commentsList.stream().map(CommentListResponse::from).collect(Collectors.toList());
     }
 

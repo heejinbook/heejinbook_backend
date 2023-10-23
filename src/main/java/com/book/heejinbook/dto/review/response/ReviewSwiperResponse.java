@@ -21,6 +21,7 @@ public class ReviewSwiperResponse {
     private String reviewAuthorProfileUrl;
     private String reviewContents;
     private String reviewCreatedAt;
+    private Long commentCount;
 
     public static ReviewSwiperResponse from(Review review) {
         return ReviewSwiperResponse.builder()
@@ -32,6 +33,7 @@ public class ReviewSwiperResponse {
                 .reviewPhrase(review.getPhrase())
                 .reviewCreatedAt(DateUtils.convertToString(review.getCreatedAt()))
                 .bookId(review.getBook().getId())
+                .commentCount(review.getCommentCount())
                 .build();
     }
 

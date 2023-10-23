@@ -1,4 +1,4 @@
-package com.book.heejinbook.repository;
+package com.book.heejinbook.repository.book;
 
 import com.book.heejinbook.dto.book.request.BookListRequest;
 import com.book.heejinbook.dto.book.response.BookListResponse;
@@ -9,7 +9,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-public interface BookRepository extends JpaRepository<Book, Long> {
+public interface BookRepository extends JpaRepository<Book, Long>, BookCustomRepository {
 
     @Query("SELECT new com.book.heejinbook.dto.book.response.BookListResponse " +
             "(b.id, b.title, b.author, b.thumbnailUrl, COUNT(r)) " +
