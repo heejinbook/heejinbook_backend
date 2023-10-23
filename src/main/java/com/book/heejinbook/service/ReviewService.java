@@ -55,7 +55,7 @@ public class ReviewService {
 
     public PaginationResponse<ReviewListResponse> getList(Long bookId, Pageable pageable) {
         Book book = validBook(bookId);
-        Page<ReviewListResponse> pageData = reviewRepository.findByReviewList(book, pageable);
+        Page<ReviewListResponse> pageData = reviewRepository.findByReviewListAndIsDeletedFalse(book, pageable);
 
         return new PaginationBuilder<ReviewListResponse>()
                 .hasNext(pageData.hasNext())
