@@ -52,9 +52,7 @@ public class ReviewCustomRepositoryImpl implements ReviewCustomRepository {
                         review.contents,
                         review.createdAt,
                         review.phrase,
-                        JPAExpressions.select(like.id.count())
-                                .from(like)
-                                .where(like.review.id.eq(review.id)),
+                        like.id.count(),
                         JPAExpressions.select(Expressions.constant(true))
                                 .from(like)
                                 .where(like.review.id.eq(review.id)
@@ -62,6 +60,8 @@ public class ReviewCustomRepositoryImpl implements ReviewCustomRepository {
                                 .exists()
                 ))
                 .from(review)
+                .leftJoin(like)
+                .on(like.review.id.eq(review.id))
                 .where(
                         eqBookId(book.getId()),
                         isDeletedFalse()
@@ -75,6 +75,8 @@ public class ReviewCustomRepositoryImpl implements ReviewCustomRepository {
         int getTotalCount = jpaQueryFactory
                 .select(Wildcard.count)
                 .from(review)
+                .leftJoin(like)
+                .on(like.review.id.eq(review.id))
                 .where(
                         eqBookId(book.getId()),
                         isDeletedFalse()
