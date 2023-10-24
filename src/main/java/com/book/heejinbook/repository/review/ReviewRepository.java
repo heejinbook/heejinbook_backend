@@ -19,6 +19,10 @@ public interface ReviewRepository extends JpaRepository<Review, Long>, ReviewCus
     List<Review> findAllByUserAndIsDeletedFalseOrderByIdDesc(User user);
     @Query("select count(r) from Review r where r.book = ?1 and r.isDeleted = false")
     long countByBook(Book book);
+
+    @Query("select avg(r.rating) from Review r where r.book = ?1 and r.isDeleted = false ")
+    Double avgRatingByBook(Book book);
+
     @Transactional
     @Modifying
     @Query("update Review r set r.isDeleted = true where r.id = ?1")

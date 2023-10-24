@@ -66,6 +66,9 @@ public class Review {
     @OneToMany(mappedBy = "review", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Comment> comments;
 
+    @Column(name = "rating")
+    private Integer rating;
+
     public Long getCommentCount() {
         return (long) comments.size();
     }
@@ -77,6 +80,7 @@ public class Review {
                 .title(registerReviewRequest.getTitle())
                 .contents(registerReviewRequest.getContents())
                 .phrase(registerReviewRequest.getPhrase())
+                .rating(registerReviewRequest.getRating())
                 .isDeleted(false)
                 .build();
     }

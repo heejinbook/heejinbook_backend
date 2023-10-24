@@ -79,9 +79,10 @@ public class BookService {
         Book book = validBook(bookId);
         User user = validUser(AuthHolder.getUserId());
         Long reviewCount = reviewRepository.countByBook(book);
+        Double avgRating = reviewRepository.avgRatingByBook(book);
         Boolean isLibrary = libraryRepository.existsByBookAndUser(book, user);
         Boolean isWriteReview = reviewRepository.existsByBookAndUserAndIsDeletedFalse(book, user);
-        return DetailBookResponse.from(book, reviewCount, isLibrary, isWriteReview);
+        return DetailBookResponse.from(book, reviewCount, isLibrary, isWriteReview, avgRating);
     }
 
     private Book validBook(Long bookId) {

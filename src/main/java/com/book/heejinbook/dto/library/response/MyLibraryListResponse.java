@@ -16,6 +16,7 @@ public class MyLibraryListResponse {
     private String bookTitle;
     private String bookAuthor;
     private String bookThumbnail;
+    private Double avgRating;
 
     public static MyLibraryListResponse from(Library library) {
         return MyLibraryListResponse.builder()
@@ -23,6 +24,7 @@ public class MyLibraryListResponse {
                 .bookTitle(library.getBook().getTitle())
                 .bookAuthor(library.getBook().getAuthor())
                 .bookThumbnail(library.getBook().getThumbnailUrl())
+                .avgRating(library.getBook().getAvgRating())
                 .build();
         }
 
