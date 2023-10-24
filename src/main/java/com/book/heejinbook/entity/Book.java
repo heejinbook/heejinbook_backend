@@ -10,6 +10,8 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.text.ParseException;
 import java.time.Instant;
+import java.util.List;
+import java.util.OptionalDouble;
 import java.util.Random;
 
 @Getter
@@ -59,6 +61,17 @@ public class Book {
 
     @Column(name = "release_date")
     private Instant releaseDate;
+
+    @OneToMany(mappedBy = "book", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Review> reviews;
+
+    public Double getAvgRating() {
+        OptionalDouble averageRating = reviews.stream()
+                .mapToDouble(Review::getRating)
+                .average();
+
+        return (Math.round(averageRating.orElse(0)*10)/10.0); // 별점이 없을 경우 기본값은 0.0
+    }
 
     public static Book from(KakaoBookResponse.Document document) {
 
