@@ -3,10 +3,13 @@ package com.book.heejinbook.repository.review;
 import com.book.heejinbook.dto.review.response.ReviewListResponse;
 import com.book.heejinbook.entity.Book;
 import com.book.heejinbook.enums.ReviewSortType;
+import com.book.heejinbook.security.AuthHolder;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.core.types.dsl.Wildcard;
+import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -21,6 +24,7 @@ import java.util.Objects;
 import static com.book.heejinbook.entity.QBook.book;
 import static com.book.heejinbook.entity.QReview.review;
 import static com.book.heejinbook.entity.QComment.comment;
+import static com.book.heejinbook.entity.QLike.like;
 
 @Repository
 @RequiredArgsConstructor
@@ -34,8 +38,8 @@ public class ReviewCustomRepositoryImpl implements ReviewCustomRepository {
         ReviewSortType reviewSortType = ReviewSortType.fromString(sort);
         List<OrderSpecifier<?>> orderSpecifiers = new ArrayList<>();
 
-        if (Objects.requireNonNull(reviewSortType) == ReviewSortType.COUNT_COMMENT) {
-            orderSpecifiers.add(comment.id.count().desc());
+        if (Objects.requireNonNull(reviewSortType) == ReviewSortType.COUNT_LIKE) {
+            orderSpecifiers.add(like.id.count().desc());
         }
         orderSpecifiers.add(review.id.desc());
 
@@ -48,12 +52,16 @@ public class ReviewCustomRepositoryImpl implements ReviewCustomRepository {
                         review.contents,
                         review.createdAt,
                         review.phrase,
-                        comment.id.count()
+                        JPAExpressions.select(like.id.count())
+                                .from(like)
+                                .where(like.review.id.eq(review.id)),
+                        JPAExpressions.select(Expressions.constant(true))
+                                .from(like)
+                                .where(like.review.id.eq(review.id)
+                                        .and(like.user.id.eq(AuthHolder.getUserId())))
+                                .exists()
                 ))
                 .from(review)
-                .leftJoin(comment)
-                .on(comment.review.id.eq(review.id),
-                        comment.isDeleted.eq(false))
                 .where(
                         eqBookId(book.getId()),
                         isDeletedFalse()
@@ -67,9 +75,6 @@ public class ReviewCustomRepositoryImpl implements ReviewCustomRepository {
         int getTotalCount = jpaQueryFactory
                 .select(Wildcard.count)
                 .from(review)
-                .leftJoin(comment)
-                .on(comment.review.id.eq(review.id),
-                        comment.isDeleted.eq(false))
                 .where(
                         eqBookId(book.getId()),
                         isDeletedFalse()

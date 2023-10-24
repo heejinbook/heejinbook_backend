@@ -55,6 +55,9 @@ public class Review {
     @Column
     private String phrase;
 
+    @Column(name = "rating")
+    private Integer rating;
+
     @CreationTimestamp
     @Column(name = "created_at", nullable = false, updatable = false)
     private Instant createdAt;
@@ -66,8 +69,10 @@ public class Review {
     @OneToMany(mappedBy = "review", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Comment> comments;
 
-    @Column(name = "rating")
-    private Integer rating;
+    @OneToMany(mappedBy = "review", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Like> likes;
+
+
 
     public Long getCommentCount() {
         return (long) comments.size();
