@@ -12,11 +12,13 @@ import com.book.heejinbook.error.CustomException;
 import com.book.heejinbook.error.domain.BookErrorCode;
 import com.book.heejinbook.error.domain.ReviewErrorCode;
 import com.book.heejinbook.error.domain.UserErrorCode;
+import com.book.heejinbook.repository.LikeRepository;
 import com.book.heejinbook.repository.book.BookRepository;
 import com.book.heejinbook.repository.comment.CommentRepository;
 import com.book.heejinbook.repository.review.ReviewCustomRepositoryImpl;
 import com.book.heejinbook.repository.review.ReviewRepository;
 import com.book.heejinbook.repository.UserRepository;
+import com.book.heejinbook.security.Auth;
 import com.book.heejinbook.security.AuthHolder;
 import com.book.heejinbook.utils.PaginationBuilder;
 import lombok.RequiredArgsConstructor;
@@ -38,6 +40,7 @@ public class ReviewService {
     private final ReviewRepository reviewRepository;
     private final ReviewCustomRepositoryImpl reviewCustomRepository;
     private final CommentRepository commentRepository;
+    private final LikeRepository likeRepository;
 
     public void registerReview(Long bookId, RegisterReviewRequest registerReviewRequest) {
 
@@ -53,9 +56,13 @@ public class ReviewService {
 
     public List<ReviewSwiperResponse> getSwiperList(Long bookId, Integer size) {
         Book book = validBook(bookId);
+        User user = validUser(AuthHolder.getUserId());
         Pageable pageable = PageRequest.of(0, size);
         Page<Review> randomReviews = reviewRepository.findRandomReviews(book, pageable);
-        return randomReviews.getContent().stream().map(ReviewSwiperResponse::from).collect(Collectors.toList());
+        return randomReviews.getContent().stream().map(review -> {
+            Boolean isLike = likeRepository.existsByUserAndReview(user, review);
+            return ReviewSwiperResponse.from(review, isLike);
+        }).collect(Collectors.toList());
     }
 
     public PaginationResponse<ReviewListResponse> getList(Long bookId, Pageable pageable, String sort) {
@@ -95,7 +102,9 @@ public class ReviewService {
 
     public DetailReviewResponse getDetailReview(Long reviewId) {
         Review review = validReview(reviewId);
-        return DetailReviewResponse.from(review);
+        User user = validUser(AuthHolder.getUserId());
+        Boolean isLike = likeRepository.existsByUserAndReview(user, review);
+        return DetailReviewResponse.from(review, isLike);
     }
 
     private User validUser(Long userId) {
