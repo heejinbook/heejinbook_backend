@@ -6,6 +6,7 @@ import com.book.heejinbook.entity.Review;
 import com.book.heejinbook.entity.User;
 import com.book.heejinbook.error.CustomException;
 import com.book.heejinbook.error.domain.BookErrorCode;
+import com.book.heejinbook.error.domain.LikeErrorCode;
 import com.book.heejinbook.error.domain.ReviewErrorCode;
 import com.book.heejinbook.error.domain.UserErrorCode;
 import com.book.heejinbook.repository.LikeRepository;
@@ -16,6 +17,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -30,6 +32,7 @@ public class LikeService {
 
         User user = validUser(AuthHolder.getUserId());
         Review review = validReview(reviewId);
+        validSelfLike(user.getId(), review.getUser().getId());
 
         if (likeRepository.existsByUserAndReview(user, review)) {
             likeRepository.deleteByUserAndReview(user, review);
@@ -48,5 +51,11 @@ public class LikeService {
 
     private Review validReview(Long reviewId) {
         return reviewRepository.findById(reviewId).orElseThrow(() -> new CustomException(ReviewErrorCode.NOT_FOUND_REVIEW));
+    }
+
+    private void validSelfLike(Long userId, Long reviewRegisterId) {
+        if (Objects.equals(userId, reviewRegisterId)) {
+            throw new CustomException(LikeErrorCode.NOT_SUPPOSED_SELF_LIKE);
+        }
     }
 }
