@@ -80,6 +80,7 @@ public class Review {
                 .title(registerReviewRequest.getTitle())
                 .contents(registerReviewRequest.getContents())
                 .phrase(registerReviewRequest.getPhrase())
+                .rating(registerReviewRequest.getRating())
                 .isDeleted(false)
                 .build();
     }
