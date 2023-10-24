@@ -9,6 +9,7 @@ import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.Expressions;
+import com.querydsl.core.types.dsl.NumberTemplate;
 import com.querydsl.core.types.dsl.Wildcard;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
@@ -40,6 +41,22 @@ public class BookCustomRepositoryImpl implements BookCustomRepository {
         if (Objects.requireNonNull(bookSortType) == BookSortType.COUNT_REVIEW) {
             orderSpecifiers.add(review.id.count().desc());
         }
+
+        switch (bookSortType) {
+            case COUNT_REVIEW:
+                orderSpecifiers.add(review.id.count().desc());
+                break;
+            case RATING_DESC:
+                NumberTemplate<Double> avgRating = Expressions.numberTemplate(Double.class,
+                        "function('ROUND', function('AVG', {0}), 1)",
+                        review.rating.coalesce(0));
+                orderSpecifiers.add(avgRating.desc());
+                break;
+            case TITLE_ASC:
+                orderSpecifiers.add(book.title.asc());
+                break;
+        }
+
         orderSpecifiers.add(book.id.desc());
 
         List<BookListResponse> result = jpaQueryFactory
@@ -48,7 +65,10 @@ public class BookCustomRepositoryImpl implements BookCustomRepository {
                             book.title,
                             book.author,
                             book.thumbnailUrl,
-                            review.id.count()
+                            review.id.count(),
+                                Expressions.numberTemplate(Double.class,
+                                        "function('ROUND', function('AVG', {0}), 1)",
+                                        review.rating.coalesce(0))
                         ))
                 .from(book)
                 .leftJoin(review)

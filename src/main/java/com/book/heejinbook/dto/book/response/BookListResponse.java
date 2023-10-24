@@ -14,5 +14,6 @@ public class BookListResponse {
     private String author;
     private String thumbnail;
     private Long reviewCount;
+    private Double avgRating;
 
 }
