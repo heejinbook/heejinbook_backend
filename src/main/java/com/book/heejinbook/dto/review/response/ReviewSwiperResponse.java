@@ -24,7 +24,7 @@ public class ReviewSwiperResponse {
     private Integer likeCount;
     private Boolean isLike;
 
-    public static ReviewSwiperResponse from(Review review) {
+    public static ReviewSwiperResponse from(Review review, Boolean isLike) {
         return ReviewSwiperResponse.builder()
                 .reviewId(review.getId())
                 .reviewAuthor(review.getUser().getNickname())
@@ -35,6 +35,7 @@ public class ReviewSwiperResponse {
                 .reviewCreatedAt(DateUtils.convertToString(review.getCreatedAt()))
                 .bookId(review.getBook().getId())
                 .likeCount(review.getLikeCount())
+                .isLike(isLike)
                 .build();
     }
 

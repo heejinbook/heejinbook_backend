@@ -18,6 +18,7 @@ import com.book.heejinbook.repository.comment.CommentRepository;
 import com.book.heejinbook.repository.review.ReviewCustomRepositoryImpl;
 import com.book.heejinbook.repository.review.ReviewRepository;
 import com.book.heejinbook.repository.UserRepository;
+import com.book.heejinbook.security.Auth;
 import com.book.heejinbook.security.AuthHolder;
 import com.book.heejinbook.utils.PaginationBuilder;
 import lombok.RequiredArgsConstructor;
@@ -55,9 +56,13 @@ public class ReviewService {
 
     public List<ReviewSwiperResponse> getSwiperList(Long bookId, Integer size) {
         Book book = validBook(bookId);
+        User user = validUser(AuthHolder.getUserId());
         Pageable pageable = PageRequest.of(0, size);
         Page<Review> randomReviews = reviewRepository.findRandomReviews(book, pageable);
-        return randomReviews.getContent().stream().map(ReviewSwiperResponse::from).collect(Collectors.toList());
+        return randomReviews.getContent().stream().map(review -> {
+            Boolean isLike = likeRepository.existsByUserAndReview(user, review);
+            return ReviewSwiperResponse.from(review, isLike);
+        }).collect(Collectors.toList());
     }
 
     public PaginationResponse<ReviewListResponse> getList(Long bookId, Pageable pageable, String sort) {
