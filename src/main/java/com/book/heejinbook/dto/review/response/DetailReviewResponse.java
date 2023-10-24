@@ -20,9 +20,9 @@ public class DetailReviewResponse {
     private String reviewContents;
     private String reviewPhrase;
     private String reviewCreatedAt;
-    private Long commentCount;
+    private Integer reviewRating;
 
-    public static DetailReviewResponse from(Review review, Long commentCount) {
+    public static DetailReviewResponse from(Review review) {
         return DetailReviewResponse.builder()
                 .reviewId(review.getId())
                 .reviewAuthor(review.getUser().getNickname())
@@ -31,7 +31,7 @@ public class DetailReviewResponse {
                 .reviewContents(review.getContents())
                 .reviewPhrase(review.getPhrase())
                 .reviewCreatedAt(DateUtils.convertToString(review.getCreatedAt()))
-                .commentCount(commentCount)
+                .reviewRating(review.getRating())
                 .build();
     }
 
