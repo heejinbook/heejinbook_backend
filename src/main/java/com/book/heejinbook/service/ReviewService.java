@@ -95,8 +95,7 @@ public class ReviewService {
 
     public DetailReviewResponse getDetailReview(Long reviewId) {
         Review review = validReview(reviewId);
-        Long commentCount = commentRepository.countByReviewAndIsDeletedFalse(review);
-        return DetailReviewResponse.from(review, commentCount);
+        return DetailReviewResponse.from(review);
     }
 
     private User validUser(Long userId) {
