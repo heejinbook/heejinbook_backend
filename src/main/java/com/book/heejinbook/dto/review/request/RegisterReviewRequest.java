@@ -14,5 +14,6 @@ public class RegisterReviewRequest {
     private String title;
     private String contents;
     private String phrase;
+    private Integer rating;
 
 }

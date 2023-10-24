@@ -43,6 +43,7 @@ public class ReviewService {
 
         User user = validUser(AuthHolder.getUserId());
         Book book = validBook(bookId);
+        validRating(registerReviewRequest.getRating());
         if (reviewRepository.existsByBookAndUserAndIsDeletedFalse(book,user)) {
             throw new CustomException(ReviewErrorCode.ALREADY_WRITTEN_REVIEW);
         }
@@ -75,9 +76,11 @@ public class ReviewService {
         Review review = validReview(reviewId);
 
         validRegisterUser(user.getId(), review.getUser().getId());
+        validRating(registerReviewRequest.getRating());
         review.setTitle(registerReviewRequest.getTitle());
         review.setContents(registerReviewRequest.getContents());
         review.setPhrase(registerReviewRequest.getPhrase());
+        review.setRating(registerReviewRequest.getRating());
         reviewRepository.save(review);
 
     }
@@ -111,6 +114,12 @@ public class ReviewService {
     private void validRegisterUser(Long userId, Long reviewRegisterUserId) {
         if (!Objects.equals(userId, reviewRegisterUserId)) {
             throw new CustomException(ReviewErrorCode.FORBIDDEN_REVIEW);
+        }
+    }
+
+    private void validRating(Integer rating) {
+        if (!(rating > 0 && rating < 5)) {
+            throw new CustomException(ReviewErrorCode.BAD_REQUEST_RATING_VALUE);
         }
     }
 }

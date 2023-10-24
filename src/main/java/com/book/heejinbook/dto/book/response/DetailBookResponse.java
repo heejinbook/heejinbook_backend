@@ -24,8 +24,9 @@ public class DetailBookResponse {
     private Long reviewCount;
     private Boolean isLibrary;
     private Boolean isWriteReview;
+    private Double avgRating;
 
-    public static DetailBookResponse from(Book book, Long reviewCount, Boolean isLibrary, Boolean isWriteReview) {
+    public static DetailBookResponse from(Book book, Long reviewCount, Boolean isLibrary, Boolean isWriteReview, Double avgRating) {
         return DetailBookResponse.builder()
                 .bookId(book.getId())
                 .title(book.getTitle())
@@ -39,6 +40,7 @@ public class DetailBookResponse {
                 .reviewCount(reviewCount)
                 .isLibrary(isLibrary)
                 .isWriteReview(isWriteReview)
+                .avgRating(Math.round(avgRating*10)/10.0)
                 .build();
     }
 
