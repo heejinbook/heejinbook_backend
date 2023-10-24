@@ -21,8 +21,10 @@ public class DetailReviewResponse {
     private String reviewPhrase;
     private String reviewCreatedAt;
     private Integer reviewRating;
+    private Integer likeCount;
+    private Boolean isLike;
 
-    public static DetailReviewResponse from(Review review) {
+    public static DetailReviewResponse from(Review review, Boolean isLike) {
         return DetailReviewResponse.builder()
                 .reviewId(review.getId())
                 .reviewAuthor(review.getUser().getNickname())
@@ -32,6 +34,8 @@ public class DetailReviewResponse {
                 .reviewPhrase(review.getPhrase())
                 .reviewCreatedAt(DateUtils.convertToString(review.getCreatedAt()))
                 .reviewRating(review.getRating())
+                .likeCount(review.getLikeCount())
+                .isLike(isLike)
                 .build();
     }
 

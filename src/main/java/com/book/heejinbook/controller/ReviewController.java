@@ -36,11 +36,14 @@ public class ReviewController {
         return ApiUtils.success(HttpStatus.CREATED, "리뷰 등록 완료", null);
     }
 
+    @Auth
     @GetMapping("/swiper/{book_id}")
     @Operation(summary = "swiper 리뷰 리스트 조회 (랜덤으로 내려감)")
     public Response<List<ReviewSwiperResponse>> getSwiperList(@PathVariable("book_id") Long bookId, @RequestParam Integer size) {
         return ApiUtils.success(HttpStatus.OK, "리뷰 조회 완료", reviewService.getSwiperList(bookId, size));
     }
+
+    @Auth
     @GetMapping("/list/{book_id}")
     @Operation(summary = "리뷰 리스트 페이지네이션 조회")
     public Response<PaginationResponse<ReviewListResponse>> getList(@PathVariable("book_id") Long bookId, Pageable pageable, @RequestParam(required = false) String sort) {
@@ -64,6 +67,7 @@ public class ReviewController {
         return ApiUtils.success(HttpStatus.OK, "리뷰 삭제 완료", null);
     }
 
+    @Auth
     @GetMapping("/{review_id}")
     @Operation(summary = "리뷰 상세 조회")
     public Response<DetailReviewResponse> detailReview(@PathVariable("review_id") Long reviewId) {
