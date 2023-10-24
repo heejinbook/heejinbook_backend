@@ -24,6 +24,7 @@ public class MyReviewResponse {
     private String reviewAuthorProfileUrl;
     private String reviewContents;
     private String reviewCreatedAt;
+    private Integer reviewRating;
 
     public static MyReviewResponse from(Review review) {
         return MyReviewResponse.builder()
@@ -38,6 +39,7 @@ public class MyReviewResponse {
                 .bookTitle(review.getBook().getTitle())
                 .bookThumbnail(review.getBook().getThumbnailUrl())
                 .bookAuthor(review.getBook().getAuthor())
+                .reviewRating(review.getRating())
                 .build();
     }
 
