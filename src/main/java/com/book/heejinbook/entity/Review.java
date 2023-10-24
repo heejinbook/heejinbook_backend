@@ -74,8 +74,8 @@ public class Review {
 
 
 
-    public Long getCommentCount() {
-        return (long) comments.size();
+    public Integer getLikeCount() {
+        return likes.size();
     }
 
     public static Review from(RegisterReviewRequest registerReviewRequest, Book book, User user) {

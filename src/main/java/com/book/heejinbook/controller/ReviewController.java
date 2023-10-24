@@ -66,6 +66,7 @@ public class ReviewController {
         return ApiUtils.success(HttpStatus.OK, "리뷰 삭제 완료", null);
     }
 
+    @Auth
     @GetMapping("/{review_id}")
     @Operation(summary = "리뷰 상세 조회")
     public Response<DetailReviewResponse> detailReview(@PathVariable("review_id") Long reviewId) {
