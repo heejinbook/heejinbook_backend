@@ -26,6 +26,7 @@ public class LikeService {
     private final LikeRepository likeRepository;
     private final UserRepository userRepository;
     private final ReviewRepository reviewRepository;
+    private final NotificationService notificationService;
 
     @Transactional
     public Void doLike(Long reviewId) {
@@ -41,6 +42,7 @@ public class LikeService {
                             .user(user)
                             .review(review)
                     .build());
+            notificationService.likeNotify(review.getUser().getId(), reviewId, "작성하신 리뷰에 좋아요가 달렸습니다");
         }
         return null;
     }
