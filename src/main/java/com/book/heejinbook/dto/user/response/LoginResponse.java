@@ -12,6 +12,7 @@ import lombok.NoArgsConstructor;
 @Builder
 public class LoginResponse {
 
+    private Long userId;
     private String email;
     private String nickname;
     private String accessToken;
@@ -19,6 +20,7 @@ public class LoginResponse {
 
     public static LoginResponse from(User user, String accessToken) {
         return LoginResponse.builder()
+                .userId(user.getId())
                 .email(user.getEmail())
                 .nickname(user.getNickname())
                 .profileUrl(user.getProfileUrl())
