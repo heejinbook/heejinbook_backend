@@ -42,7 +42,7 @@ public class LikeService {
                             .user(user)
                             .review(review)
                     .build());
-            notificationService.likeNotify(review.getUser().getId(), reviewId, "작성하신 리뷰에 좋아요가 달렸습니다");
+            notificationService.customNotify(review.getUser().getId(), reviewId, "작성하신 리뷰에 좋아요가 달렸습니다", "like");
         }
         return null;
     }

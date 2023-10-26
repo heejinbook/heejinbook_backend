@@ -29,10 +29,9 @@ public class NotificationService {
         return emitter;
     }
 
-    public void likeNotify(Long userId, Object data, String comment) {
-        sendToClient(userId, data, comment, "like");
+    public void customNotify(Long userId, Object data, String comment, String type) {
+        sendToClient(userId, data, comment, type);
     }
-
     public void notify(Long userId, Object data, String comment) {
         sendToClient(userId, data, comment);
     }
