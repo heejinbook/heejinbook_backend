@@ -2,6 +2,7 @@ package com.book.heejinbook.controller;
 
 import com.book.heejinbook.dto.book.request.BookListRequest;
 import com.book.heejinbook.dto.book.request.KakaoBookDataRequest;
+import com.book.heejinbook.dto.book.response.BestBooksResponse;
 import com.book.heejinbook.dto.book.response.BookListResponse;
 import com.book.heejinbook.dto.book.response.DetailBookResponse;
 import com.book.heejinbook.dto.book.response.KakaoBookResponse;
@@ -18,6 +19,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -47,6 +50,13 @@ public class BookController {
 
         return ApiUtils.success(HttpStatus.OK, "북 디테일 조회 성공", bookService.getDetail(bookId));
     }
+
+    @Operation(summary = "평균 별점 순 베스트셀러")
+    @GetMapping("/best-books")
+    public Response<List<BestBooksResponse>> getBestBooks() {
+        return ApiUtils.success(HttpStatus.OK, "베스트셀러 조회 성공", bookService.getBestBooks());
+    }
+
 
 
 }

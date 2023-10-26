@@ -1,13 +1,16 @@
 package com.book.heejinbook.repository.review;
 
 import com.book.heejinbook.dto.review.response.ReviewListResponse;
+import com.book.heejinbook.dto.review.response.ReviewSwiperResponse;
 import com.book.heejinbook.entity.Book;
+import com.book.heejinbook.entity.User;
 import com.book.heejinbook.enums.ReviewSortType;
 import com.book.heejinbook.security.AuthHolder;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.Expressions;
+import com.querydsl.core.types.dsl.NumberTemplate;
 import com.querydsl.core.types.dsl.Wildcard;
 import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -86,6 +89,43 @@ public class ReviewCustomRepositoryImpl implements ReviewCustomRepository {
                 .fetch().size();
 
         return new PageImpl<>(result, pageable, getTotalCount);
+    }
+
+    @Override
+    public List<ReviewSwiperResponse> findBestReviewList(Book detailBook, User user, Integer size) {
+
+        List<OrderSpecifier<?>> orderSpecifiers = new ArrayList<>();
+        orderSpecifiers.add(like.id.count().desc());
+        orderSpecifiers.add(review.id.desc());
+
+        return jpaQueryFactory
+                .select(Projections.constructor(
+                                ReviewSwiperResponse.class,
+                                review.id,
+                                review.book.id,
+                                review.user.nickname,
+                                review.title,
+                                review.phrase,
+                                review.user.profileUrl,
+                                review.contents,
+                                review.createdAt,
+                                like.id.count(),
+                                JPAExpressions.select(Expressions.constant(true))
+                                        .from(like)
+                                        .where(like.review.id.eq(review.id)
+                                                .and(like.user.id.eq(AuthHolder.getUserId())))
+                                        .exists()))
+                .from(review)
+                .leftJoin(like)
+                .on(like.review.id.eq(review.id))
+                .where(
+                        eqBookId(detailBook.getId()),
+                        isDeletedFalse()
+                )
+                .limit(size)
+                .orderBy(orderSpecifiers.toArray(new OrderSpecifier[0]))
+                .groupBy(review)
+                .fetch();
     }
 
     private BooleanExpression eqBookId(Long bookId) {

@@ -38,7 +38,7 @@ public class ReviewController {
 
     @Auth
     @GetMapping("/swiper/{book_id}")
-    @Operation(summary = "swiper 리뷰 리스트 조회 (랜덤으로 내려감)")
+    @Operation(summary = "swiper 리뷰 리스트 조회 (좋아요 개수 순)")
     public Response<List<ReviewSwiperResponse>> getSwiperList(@PathVariable("book_id") Long bookId, @RequestParam Integer size) {
         return ApiUtils.success(HttpStatus.OK, "리뷰 조회 완료", reviewService.getSwiperList(bookId, size));
     }
