@@ -57,12 +57,7 @@ public class ReviewService {
     public List<ReviewSwiperResponse> getSwiperList(Long bookId, Integer size) {
         Book book = validBook(bookId);
         User user = validUser(AuthHolder.getUserId());
-        Pageable pageable = PageRequest.of(0, size);
-        Page<Review> randomReviews = reviewRepository.findRandomReviews(book, pageable);
-        return randomReviews.getContent().stream().map(review -> {
-            Boolean isLike = likeRepository.existsByUserAndReview(user, review);
-            return ReviewSwiperResponse.from(review, isLike);
-        }).collect(Collectors.toList());
+        return reviewCustomRepository.findBestReviewList(book, user, size);
     }
 
     public PaginationResponse<ReviewListResponse> getList(Long bookId, Pageable pageable, String sort) {

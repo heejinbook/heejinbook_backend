@@ -2,6 +2,7 @@ package com.book.heejinbook.service;
 
 import com.book.heejinbook.dto.book.request.BookListRequest;
 import com.book.heejinbook.dto.book.request.KakaoBookDataRequest;
+import com.book.heejinbook.dto.book.response.BestBooksResponse;
 import com.book.heejinbook.dto.book.response.BookListResponse;
 import com.book.heejinbook.dto.book.response.DetailBookResponse;
 import com.book.heejinbook.dto.book.response.KakaoBookResponse;
@@ -23,6 +24,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
@@ -82,7 +84,12 @@ public class BookService {
         Double avgRating = reviewRepository.avgRatingByBook(book);
         Boolean isLibrary = libraryRepository.existsByBookAndUser(book, user);
         Boolean isWriteReview = reviewRepository.existsByBookAndUserAndIsDeletedFalse(book, user);
-        return DetailBookResponse.from(book, reviewCount, isLibrary, isWriteReview, avgRating);
+        Boolean isBest = bookCustomRepository.existBestBooks(book);
+        return DetailBookResponse.of(book, reviewCount, isLibrary, isWriteReview, avgRating, isBest);
+    }
+
+    public List<BestBooksResponse> getBestBooks() {
+        return bookCustomRepository.findBestBookList();
     }
 
     private Book validBook(Long bookId) {
@@ -92,5 +99,4 @@ public class BookService {
     private User validUser(Long userId) {
         return userRepository.findById(userId).orElseThrow(() -> new CustomException(UserErrorCode.NOT_FOUND_USER));
     }
-
 }
