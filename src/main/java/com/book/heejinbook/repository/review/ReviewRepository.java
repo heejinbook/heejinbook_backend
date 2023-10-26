@@ -20,7 +20,7 @@ public interface ReviewRepository extends JpaRepository<Review, Long>, ReviewCus
     @Query("select count(r) from Review r where r.book = ?1 and r.isDeleted = false")
     long countByBook(Book book);
 
-    @Query("select avg(r.rating) from Review r where r.book = ?1 and r.isDeleted = false ")
+    @Query("select coalesce(avg(r.rating), 0) from Review r where r.book = ?1 and r.isDeleted = false ")
     Double avgRatingByBook(Book book);
 
     @Transactional
