@@ -7,6 +7,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.Instant;
+
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
@@ -21,8 +23,21 @@ public class ReviewSwiperResponse {
     private String reviewAuthorProfileUrl;
     private String reviewContents;
     private String reviewCreatedAt;
-    private Integer likeCount;
+    private Long likeCount;
     private Boolean isLike;
+
+    public ReviewSwiperResponse(Long reviewId, Long bookId, String reviewAuthor, String reviewTitle, String reviewPhrase, String reviewAuthorProfileUrl, String reviewContents, Instant reviewCreatedAt, Long likeCount, Boolean isLike) {
+        this.reviewId = reviewId;
+        this.bookId = bookId;
+        this.reviewAuthor = reviewAuthor;
+        this.reviewTitle = reviewTitle;
+        this.reviewPhrase = reviewPhrase;
+        this.reviewAuthorProfileUrl = reviewAuthorProfileUrl;
+        this.reviewContents = reviewContents;
+        this.reviewCreatedAt = DateUtils.convertToString(reviewCreatedAt);
+        this.likeCount = likeCount;
+        this.isLike = isLike;
+    }
 
     public static ReviewSwiperResponse from(Review review, Boolean isLike) {
         return ReviewSwiperResponse.builder()
@@ -34,7 +49,7 @@ public class ReviewSwiperResponse {
                 .reviewPhrase(review.getPhrase())
                 .reviewCreatedAt(DateUtils.convertToString(review.getCreatedAt()))
                 .bookId(review.getBook().getId())
-                .likeCount(review.getLikeCount())
+                .likeCount((long)review.getLikeCount())
                 .isLike(isLike)
                 .build();
     }
