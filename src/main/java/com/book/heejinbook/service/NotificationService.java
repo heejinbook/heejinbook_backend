@@ -29,7 +29,7 @@ public class NotificationService {
         return emitter;
     }
 
-    public void customNotify(Long userId, Object data, String comment, String type) {
+    public <T> void customNotify(Long userId, T data, String comment, String type) {
         sendToClient(userId, data, comment, type);
     }
     public void notify(Long userId, Object data, String comment) {
@@ -52,7 +52,7 @@ public class NotificationService {
         }
     }
 
-    private void sendToClient(Long userId, Object data, String comment, String type) {
+    private <T> void sendToClient(Long userId, T data, String comment, String type) {
         SseEmitter emitter = emitterRepository.get(userId);
         if (emitter != null) {
             try {
