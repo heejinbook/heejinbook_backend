@@ -14,10 +14,16 @@ import com.book.heejinbook.repository.LikeRepository;
 import com.book.heejinbook.repository.UserRepository;
 import com.book.heejinbook.repository.review.ReviewRepository;
 import com.book.heejinbook.security.AuthHolder;
+import com.book.heejinbook.utils.DateUtils;
 import lombok.RequiredArgsConstructor;
+import org.joda.time.Instant;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.Objects;
 
 @Service
@@ -47,7 +53,9 @@ public class LikeService {
                     .nickname(user.getNickname())
                     .reviewId(reviewId)
                     .thumbnail(review.getBook().getThumbnailUrl())
+                    .likeDate(DateUtils.formatLocalDateTime(LocalDateTime.now(ZoneId.of("Asia/Seoul"))))
                     .build();
+
             notificationService.customNotify(review.getUser().getId(), likeSseResponse, "작성하신 리뷰에 좋아요가 달렸습니다", "like");
         }
         return null;
