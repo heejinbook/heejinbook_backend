@@ -121,7 +121,7 @@ public class ReviewService {
     }
 
     private void validRating(Integer rating) {
-        if (!(rating > 0 && rating < 5)) {
+        if (!(rating > 0 && rating <= 5)) {
             throw new CustomException(ReviewErrorCode.BAD_REQUEST_RATING_VALUE);
         }
     }
