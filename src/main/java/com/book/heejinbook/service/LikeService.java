@@ -1,5 +1,6 @@
 package com.book.heejinbook.service;
 
+import com.book.heejinbook.dto.sse.response.LikeSseResponse;
 import com.book.heejinbook.entity.Book;
 import com.book.heejinbook.entity.Like;
 import com.book.heejinbook.entity.Review;
@@ -42,7 +43,12 @@ public class LikeService {
                             .user(user)
                             .review(review)
                     .build());
-            notificationService.customNotify(review.getUser().getId(), reviewId, "작성하신 리뷰에 좋아요가 달렸습니다", "like");
+            LikeSseResponse likeSseResponse = LikeSseResponse.builder()
+                    .nickname(user.getNickname())
+                    .reviewId(reviewId)
+                    .thumbnail(review.getBook().getThumbnailUrl())
+                    .build();
+            notificationService.customNotify(review.getUser().getId(), likeSseResponse, "작성하신 리뷰에 좋아요가 달렸습니다", "like");
         }
         return null;
     }
