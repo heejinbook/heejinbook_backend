@@ -53,7 +53,7 @@ public class LikeService {
                     .nickname(user.getNickname())
                     .reviewId(reviewId)
                     .thumbnail(review.getBook().getThumbnailUrl())
-                    .likeDate(DateUtils.formatLocalDateTime(LocalDateTime.now(ZoneId.of("Asia/Seoul"))))
+                    .likedTime(DateUtils.formatLocalDateTime(LocalDateTime.now(ZoneId.of("Asia/Seoul"))))
                     .build();
 
             notificationService.customNotify(review.getUser().getId(), likeSseResponse, "작성하신 리뷰에 좋아요가 달렸습니다", "like");

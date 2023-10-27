@@ -14,6 +14,6 @@ public class LikeSseResponse {
     private String nickname;
     private Long reviewId;
     private String thumbnail;
-    private String likeDate;
+    private String likedTime;
 
 }
