@@ -25,8 +25,9 @@ public class ReviewSwiperResponse {
     private String reviewCreatedAt;
     private Long likeCount;
     private Boolean isLike;
+    private Integer reviewRating;
 
-    public ReviewSwiperResponse(Long reviewId, Long bookId, String reviewAuthor, String reviewTitle, String reviewPhrase, String reviewAuthorProfileUrl, String reviewContents, Instant reviewCreatedAt, Long likeCount, Boolean isLike) {
+    public ReviewSwiperResponse(Long reviewId, Long bookId, String reviewAuthor, String reviewTitle, String reviewPhrase, String reviewAuthorProfileUrl, String reviewContents, Instant reviewCreatedAt, Long likeCount, Boolean isLike, Integer reviewRating) {
         this.reviewId = reviewId;
         this.bookId = bookId;
         this.reviewAuthor = reviewAuthor;
@@ -37,6 +38,7 @@ public class ReviewSwiperResponse {
         this.reviewCreatedAt = DateUtils.convertToString(reviewCreatedAt);
         this.likeCount = likeCount;
         this.isLike = isLike;
+        this.reviewRating = reviewRating;
     }
 
     public static ReviewSwiperResponse from(Review review, Boolean isLike) {
