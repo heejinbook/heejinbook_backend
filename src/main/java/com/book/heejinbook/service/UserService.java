@@ -19,6 +19,7 @@ import com.book.heejinbook.repository.comment.CommentRepository;
 import com.book.heejinbook.repository.review.ReviewRepository;
 import com.book.heejinbook.repository.UserRepository;
 import com.book.heejinbook.dto.user.request.SignupRequest;
+import com.book.heejinbook.security.Auth;
 import com.book.heejinbook.security.AuthHolder;
 import com.book.heejinbook.security.TokenProvider;
 import lombok.RequiredArgsConstructor;
@@ -124,6 +125,14 @@ public class UserService {
         return comments.stream().map(CommentListResponse::from).collect(Collectors.toList());
     }
 
+    @Transactional
+    public Void changeMyNickname(String nickname) {
+        User user = validUser(AuthHolder.getUserId());
+        user.setNickname(nickname);
+        userRepository.save(user);
+        return null;
+    }
+
 
     private void checkDuplicateEmail(String email) {
         if (userRepository.existsByEmail(email)) {
@@ -157,5 +166,10 @@ public class UserService {
 
     private User validUserByEmail(String email) {
         return userRepository.findByEmail(email).orElseThrow(() ->new CustomException(UserErrorCode.NOT_FOUND_USER));
+    }
+
+    private User validUser(Long userId) {
+        return userRepository.findById(userId).orElseThrow(() -> new CustomException(UserErrorCode.NOT_FOUND_USER));
+
     }
 }

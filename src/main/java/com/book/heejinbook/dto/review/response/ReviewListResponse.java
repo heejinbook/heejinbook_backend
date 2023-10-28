@@ -22,10 +22,11 @@ public class ReviewListResponse {
     private String reviewContents;
     private String reviewCreatedAt;
     private String reviewPhrase;
+    private Integer reviewRating;
     private Long likeCount;
     private Boolean isLike;
 
-    public ReviewListResponse(Long reviewId, String reviewAuthor, String reviewAuthorProfileUrl, String reviewTitle, String reviewContents, Instant reviewCreatedAt, String reviewPhrase,  Long likeCount, Boolean isLike) {
+    public ReviewListResponse(Long reviewId, String reviewAuthor, String reviewAuthorProfileUrl, String reviewTitle, String reviewContents, Instant reviewCreatedAt, String reviewPhrase,  Long likeCount, Boolean isLike, Integer reviewRating) {
         this.reviewId = reviewId;
         this.reviewAuthor = reviewAuthor;
         this.reviewAuthorProfileUrl = reviewAuthorProfileUrl;
@@ -35,5 +36,6 @@ public class ReviewListResponse {
         this.reviewCreatedAt = DateUtils.convertToString(reviewCreatedAt);
         this.likeCount = likeCount;
         this.isLike = isLike;
+        this.reviewRating = reviewRating;
     }
 }

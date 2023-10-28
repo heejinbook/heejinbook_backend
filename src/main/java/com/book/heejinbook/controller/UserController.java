@@ -67,4 +67,11 @@ public class UserController {
     public Response<List<CommentListResponse>> getMyComment() {
         return ApiUtils.success(HttpStatus.OK, "내 정보 조회 성공", userService.getMyComments());
     }
+
+    @Auth
+    @PatchMapping("/nickname")
+    @Operation(summary = "내 닉네임 변경")
+    public Response<Void> changeMyNickname(@RequestParam String nickname) {
+        return ApiUtils.success(HttpStatus.OK, "닉네임 변경 성공", userService.changeMyNickname(nickname));
+    }
 }
