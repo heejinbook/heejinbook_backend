@@ -60,7 +60,8 @@ public class ReviewCustomRepositoryImpl implements ReviewCustomRepository {
                                 .from(like)
                                 .where(like.review.id.eq(review.id)
                                         .and(like.user.id.eq(AuthHolder.getUserId())))
-                                .exists()
+                                .exists(),
+                        review.rating
                 ))
                 .from(review)
                 .leftJoin(like)
@@ -114,7 +115,9 @@ public class ReviewCustomRepositoryImpl implements ReviewCustomRepository {
                                         .from(like)
                                         .where(like.review.id.eq(review.id)
                                                 .and(like.user.id.eq(AuthHolder.getUserId())))
-                                        .exists()))
+                                        .exists(),
+                                review.rating
+                ))
                 .from(review)
                 .leftJoin(like)
                 .on(like.review.id.eq(review.id))
