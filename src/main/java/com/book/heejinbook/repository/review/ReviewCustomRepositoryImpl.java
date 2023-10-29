@@ -243,7 +243,9 @@ public class ReviewCustomRepositoryImpl implements ReviewCustomRepository {
                 .join(user)
                 .on(user.eq(review.user))
                 .join(review.book)
-                .where(review.user.eq(my))
+                .where(review.user.eq(my),
+                        isDeletedFalse()
+                        )
                 .orderBy(review.id.desc())
                 .groupBy(review.id)
                 .fetch()
