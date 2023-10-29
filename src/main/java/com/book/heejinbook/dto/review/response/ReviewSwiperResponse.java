@@ -1,6 +1,5 @@
 package com.book.heejinbook.dto.review.response;
 
-import com.book.heejinbook.entity.Review;
 import com.book.heejinbook.utils.DateUtils;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -24,10 +23,11 @@ public class ReviewSwiperResponse {
     private String reviewContents;
     private String reviewCreatedAt;
     private Long likeCount;
+    private Long commentCount;
     private Boolean isLike;
     private Integer reviewRating;
 
-    public ReviewSwiperResponse(Long reviewId, Long bookId, String reviewAuthor, String reviewTitle, String reviewPhrase, String reviewAuthorProfileUrl, String reviewContents, Instant reviewCreatedAt, Long likeCount, Boolean isLike, Integer reviewRating) {
+    public ReviewSwiperResponse(Long reviewId, Long bookId, String reviewAuthor, String reviewTitle, String reviewPhrase, String reviewAuthorProfileUrl, String reviewContents, Instant reviewCreatedAt, Long likeCount, Long commentCount, Boolean isLike, Integer reviewRating) {
         this.reviewId = reviewId;
         this.bookId = bookId;
         this.reviewAuthor = reviewAuthor;
@@ -38,22 +38,8 @@ public class ReviewSwiperResponse {
         this.reviewCreatedAt = DateUtils.convertToString(reviewCreatedAt);
         this.likeCount = likeCount;
         this.isLike = isLike;
+        this.commentCount = commentCount;
         this.reviewRating = reviewRating;
-    }
-
-    public static ReviewSwiperResponse from(Review review, Boolean isLike) {
-        return ReviewSwiperResponse.builder()
-                .reviewId(review.getId())
-                .reviewAuthor(review.getUser().getNickname())
-                .reviewAuthorProfileUrl(review.getUser().getProfileUrl())
-                .reviewTitle(review.getTitle())
-                .reviewContents(review.getContents())
-                .reviewPhrase(review.getPhrase())
-                .reviewCreatedAt(DateUtils.convertToString(review.getCreatedAt()))
-                .bookId(review.getBook().getId())
-                .likeCount((long)review.getLikeCount())
-                .isLike(isLike)
-                .build();
     }
 
 }

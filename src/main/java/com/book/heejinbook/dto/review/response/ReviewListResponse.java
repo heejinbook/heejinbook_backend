@@ -1,6 +1,5 @@
 package com.book.heejinbook.dto.review.response;
 
-import com.book.heejinbook.entity.Review;
 import com.book.heejinbook.utils.DateUtils;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -24,9 +23,10 @@ public class ReviewListResponse {
     private String reviewPhrase;
     private Integer reviewRating;
     private Long likeCount;
+    private Long commentCount;
     private Boolean isLike;
 
-    public ReviewListResponse(Long reviewId, String reviewAuthor, String reviewAuthorProfileUrl, String reviewTitle, String reviewContents, Instant reviewCreatedAt, String reviewPhrase,  Long likeCount, Boolean isLike, Integer reviewRating) {
+    public ReviewListResponse(Long reviewId, String reviewAuthor, String reviewAuthorProfileUrl, String reviewTitle, String reviewContents, Instant reviewCreatedAt, String reviewPhrase,  Long likeCount, Long commentCount, Boolean isLike, Integer reviewRating) {
         this.reviewId = reviewId;
         this.reviewAuthor = reviewAuthor;
         this.reviewAuthorProfileUrl = reviewAuthorProfileUrl;
@@ -35,6 +35,7 @@ public class ReviewListResponse {
         this.reviewPhrase = reviewPhrase;
         this.reviewCreatedAt = DateUtils.convertToString(reviewCreatedAt);
         this.likeCount = likeCount;
+        this.commentCount = commentCount;
         this.isLike = isLike;
         this.reviewRating = reviewRating;
     }
