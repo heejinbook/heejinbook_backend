@@ -44,6 +44,11 @@ public class ReviewCustomRepositoryImpl implements ReviewCustomRepository {
         if (Objects.requireNonNull(reviewSortType) == ReviewSortType.COUNT_LIKE) {
             orderSpecifiers.add(like.id.count().desc());
         }
+
+        if (Objects.requireNonNull(reviewSortType) == ReviewSortType.RATING_DESC) {
+            orderSpecifiers.add(review.rating.desc());
+        }
+
         orderSpecifiers.add(review.id.desc());
 
         List<ReviewListResponse> result = jpaQueryFactory
