@@ -18,18 +18,15 @@ import com.book.heejinbook.repository.comment.CommentRepository;
 import com.book.heejinbook.repository.review.ReviewCustomRepositoryImpl;
 import com.book.heejinbook.repository.review.ReviewRepository;
 import com.book.heejinbook.repository.UserRepository;
-import com.book.heejinbook.security.Auth;
 import com.book.heejinbook.security.AuthHolder;
 import com.book.heejinbook.utils.PaginationBuilder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -39,8 +36,6 @@ public class ReviewService {
     private final BookRepository bookRepository;
     private final ReviewRepository reviewRepository;
     private final ReviewCustomRepositoryImpl reviewCustomRepository;
-    private final CommentRepository commentRepository;
-    private final LikeRepository likeRepository;
 
     public void registerReview(Long bookId, RegisterReviewRequest registerReviewRequest) {
 
@@ -98,8 +93,7 @@ public class ReviewService {
     public DetailReviewResponse getDetailReview(Long reviewId) {
         Review review = validReview(reviewId);
         User user = validUser(AuthHolder.getUserId());
-        Boolean isLike = likeRepository.existsByUserAndReview(user, review);
-        return DetailReviewResponse.from(review, isLike);
+       return reviewCustomRepository.findDetailReviewByReviewId(review, user);
     }
 
     private User validUser(Long userId) {
