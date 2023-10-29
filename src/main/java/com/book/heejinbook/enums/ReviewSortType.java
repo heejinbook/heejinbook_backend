@@ -6,7 +6,10 @@ import com.book.heejinbook.error.domain.BookErrorCode;
 public enum ReviewSortType {
 
     COUNT_LIKE,   // 좋아요 많은 수
-    CREATED_AT;  // 최신 순
+    CREATED_AT,
+    RATING_DESC // 별점 높은 순
+    
+    ;  // 최신 순
 
     public static ReviewSortType fromString(String value) {
         try {
