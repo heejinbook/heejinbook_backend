@@ -6,6 +6,7 @@ import com.book.heejinbook.dto.review.response.ReviewListResponse;
 import com.book.heejinbook.dto.review.response.ReviewSwiperResponse;
 import com.book.heejinbook.dto.vo.PaginationResponse;
 import com.book.heejinbook.entity.Book;
+import com.book.heejinbook.entity.Comment;
 import com.book.heejinbook.entity.Review;
 import com.book.heejinbook.entity.User;
 import com.book.heejinbook.error.CustomException;
@@ -98,8 +99,7 @@ public class ReviewService {
     public DetailReviewResponse getDetailReview(Long reviewId) {
         Review review = validReview(reviewId);
         User user = validUser(AuthHolder.getUserId());
-        Boolean isLike = likeRepository.existsByUserAndReview(user, review);
-        return DetailReviewResponse.from(review, isLike);
+       return reviewCustomRepository.findDetailReviewByReviewId(review, user);
     }
 
     private User validUser(Long userId) {
