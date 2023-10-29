@@ -6,7 +6,6 @@ import com.book.heejinbook.dto.review.response.ReviewListResponse;
 import com.book.heejinbook.dto.review.response.ReviewSwiperResponse;
 import com.book.heejinbook.dto.vo.PaginationResponse;
 import com.book.heejinbook.entity.Book;
-import com.book.heejinbook.entity.Comment;
 import com.book.heejinbook.entity.Review;
 import com.book.heejinbook.entity.User;
 import com.book.heejinbook.error.CustomException;
@@ -19,18 +18,15 @@ import com.book.heejinbook.repository.comment.CommentRepository;
 import com.book.heejinbook.repository.review.ReviewCustomRepositoryImpl;
 import com.book.heejinbook.repository.review.ReviewRepository;
 import com.book.heejinbook.repository.UserRepository;
-import com.book.heejinbook.security.Auth;
 import com.book.heejinbook.security.AuthHolder;
 import com.book.heejinbook.utils.PaginationBuilder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor

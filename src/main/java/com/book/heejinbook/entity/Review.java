@@ -1,8 +1,6 @@
 package com.book.heejinbook.entity;
 
 import com.book.heejinbook.dto.review.request.RegisterReviewRequest;
-import com.book.heejinbook.entity.Book;
-import com.book.heejinbook.entity.User;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.DynamicInsert;
@@ -65,21 +63,6 @@ public class Review {
     @UpdateTimestamp
     @Column(name = "updated_at", insertable = false)
     private Instant updatedAt;
-
-    @OneToMany(mappedBy = "review", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Comment> comments;
-
-    @OneToMany(mappedBy = "review", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Like> likes;
-
-
-
-    public Integer getLikeCount() {
-        return likes.size();
-    }
-
-    public Long getCommentCount() {
-        return comments.stream().filter(comment -> comment.getIsDeleted() == false).count();}
 
     public static Review from(RegisterReviewRequest registerReviewRequest, Book book, User user) {
         return Review.builder()

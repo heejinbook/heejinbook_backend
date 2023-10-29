@@ -47,23 +47,4 @@ public class MyReviewResponse {
         this.commentCount = commentCount;
     }
 
-    public static MyReviewResponse from(Review review) {
-        return MyReviewResponse.builder()
-                .reviewId(review.getId())
-                .reviewAuthor(review.getUser().getNickname())
-                .reviewAuthorProfileUrl(review.getUser().getProfileUrl())
-                .reviewTitle(review.getTitle())
-                .reviewContents(review.getContents())
-                .reviewPhrase(review.getPhrase())
-                .reviewCreatedAt(DateUtils.convertToString(review.getCreatedAt()))
-                .bookId(review.getBook().getId())
-                .bookTitle(review.getBook().getTitle())
-                .bookThumbnail(review.getBook().getThumbnailUrl())
-                .bookAuthor(review.getBook().getAuthor())
-                .reviewRating(review.getRating())
-                .likeCount((long)review.getLikeCount())
-                .commentCount(review.getCommentCount())
-                .build();
-    }
-
 }

@@ -43,19 +43,4 @@ public class ReviewSwiperResponse {
         this.reviewRating = reviewRating;
     }
 
-    public static ReviewSwiperResponse from(Review review, Boolean isLike) {
-        return ReviewSwiperResponse.builder()
-                .reviewId(review.getId())
-                .reviewAuthor(review.getUser().getNickname())
-                .reviewAuthorProfileUrl(review.getUser().getProfileUrl())
-                .reviewTitle(review.getTitle())
-                .reviewContents(review.getContents())
-                .reviewPhrase(review.getPhrase())
-                .reviewCreatedAt(DateUtils.convertToString(review.getCreatedAt()))
-                .bookId(review.getBook().getId())
-                .likeCount((long)review.getLikeCount())
-                .isLike(isLike)
-                .build();
-    }
-
 }

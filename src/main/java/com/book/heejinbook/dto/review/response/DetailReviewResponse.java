@@ -1,14 +1,11 @@
 package com.book.heejinbook.dto.review.response;
 
-import com.book.heejinbook.entity.Comment;
-import com.book.heejinbook.entity.Review;
 import com.book.heejinbook.utils.DateUtils;
 import lombok.*;
 
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Getter
 @NoArgsConstructor

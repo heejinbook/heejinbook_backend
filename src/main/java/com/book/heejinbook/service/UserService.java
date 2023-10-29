@@ -9,19 +9,16 @@ import com.book.heejinbook.dto.user.response.KakaoUserInfoResponse;
 import com.book.heejinbook.dto.user.response.LoginResponse;
 import com.book.heejinbook.dto.user.response.MyInfoResponse;
 import com.book.heejinbook.entity.Comment;
-import com.book.heejinbook.entity.Review;
 import com.book.heejinbook.entity.User;
 import com.book.heejinbook.enums.FilePath;
 import com.book.heejinbook.error.CustomException;
 import com.book.heejinbook.error.domain.FileErrorCode;
 import com.book.heejinbook.error.domain.UserErrorCode;
 import com.book.heejinbook.repository.comment.CommentRepository;
-import com.book.heejinbook.repository.review.ReviewCustomRepository;
 import com.book.heejinbook.repository.review.ReviewCustomRepositoryImpl;
 import com.book.heejinbook.repository.review.ReviewRepository;
 import com.book.heejinbook.repository.UserRepository;
 import com.book.heejinbook.dto.user.request.SignupRequest;
-import com.book.heejinbook.security.Auth;
 import com.book.heejinbook.security.AuthHolder;
 import com.book.heejinbook.security.TokenProvider;
 import lombok.RequiredArgsConstructor;
@@ -50,7 +47,6 @@ public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final AwsS3Service awsS3Service;
-    private final ReviewRepository reviewRepository;
     private final CommentRepository commentRepository;
     private final ReviewCustomRepositoryImpl reviewCustomRepository;
 

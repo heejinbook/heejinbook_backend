@@ -1,6 +1,5 @@
 package com.book.heejinbook.dto.review.response;
 
-import com.book.heejinbook.entity.Review;
 import com.book.heejinbook.utils.DateUtils;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
