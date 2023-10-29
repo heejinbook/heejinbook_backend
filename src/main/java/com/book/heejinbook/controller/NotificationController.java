@@ -17,7 +17,7 @@ public class NotificationController {
 
     private final NotificationService notificationService;
 
-    @GetMapping(value = "/subscribe/{user_id}", produces = "text/event-stream;charset=UTF-8")
+    @GetMapping(value = "/subscribe/{user_id}", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
     public SseEmitter subscribe(@PathVariable(value = "user_id") Long userId) {
         return notificationService.subscribe(userId);
     }

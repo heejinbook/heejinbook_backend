@@ -30,6 +30,8 @@ import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -62,6 +64,10 @@ public class BookService {
     }
 
     public PaginationResponse<BookListResponse> getList(BookListRequest bookListRequest, Pageable pageable) {
+
+        if (bookListRequest.getSearchKeyword() != null) {
+            bookListRequest.setSearchKeyword(URLDecoder.decode(bookListRequest.getSearchKeyword(), StandardCharsets.UTF_8));
+        }
 
         Page<BookListResponse> pageData = bookCustomRepository.findBookList(bookListRequest, pageable);
 
