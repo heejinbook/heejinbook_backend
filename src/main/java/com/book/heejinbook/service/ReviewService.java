@@ -36,8 +36,6 @@ public class ReviewService {
     private final BookRepository bookRepository;
     private final ReviewRepository reviewRepository;
     private final ReviewCustomRepositoryImpl reviewCustomRepository;
-    private final CommentRepository commentRepository;
-    private final LikeRepository likeRepository;
 
     public void registerReview(Long bookId, RegisterReviewRequest registerReviewRequest) {
 

@@ -16,7 +16,6 @@ import com.book.heejinbook.error.domain.FileErrorCode;
 import com.book.heejinbook.error.domain.UserErrorCode;
 import com.book.heejinbook.repository.comment.CommentRepository;
 import com.book.heejinbook.repository.review.ReviewCustomRepositoryImpl;
-import com.book.heejinbook.repository.review.ReviewRepository;
 import com.book.heejinbook.repository.UserRepository;
 import com.book.heejinbook.dto.user.request.SignupRequest;
 import com.book.heejinbook.security.AuthHolder;
