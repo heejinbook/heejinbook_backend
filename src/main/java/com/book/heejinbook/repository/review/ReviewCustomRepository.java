@@ -1,6 +1,7 @@
 package com.book.heejinbook.repository.review;
 
 import com.book.heejinbook.dto.review.response.DetailReviewResponse;
+import com.book.heejinbook.dto.review.response.MyReviewResponse;
 import com.book.heejinbook.dto.review.response.ReviewListResponse;
 import com.book.heejinbook.dto.review.response.ReviewSwiperResponse;
 import com.book.heejinbook.entity.Book;
@@ -17,4 +18,6 @@ public interface ReviewCustomRepository {
     List<ReviewSwiperResponse> findBestReviewList(Book book, User user, Integer size);
 
     DetailReviewResponse findDetailReviewByReviewId(Review review, User user);
+
+    List<MyReviewResponse> findMyReviews(User user);
 }

@@ -1,6 +1,7 @@
 package com.book.heejinbook.repository.review;
 
 import com.book.heejinbook.dto.review.response.DetailReviewResponse;
+import com.book.heejinbook.dto.review.response.MyReviewResponse;
 import com.book.heejinbook.dto.review.response.ReviewListResponse;
 import com.book.heejinbook.dto.review.response.ReviewSwiperResponse;
 import com.book.heejinbook.entity.Book;
@@ -215,6 +216,40 @@ public class ReviewCustomRepositoryImpl implements ReviewCustomRepository {
 
         return detailReviewResponse;
 
+    }
+
+    @Override
+    public List<MyReviewResponse> findMyReviews(User my) {
+        return jpaQueryFactory
+                .select(Projections.constructor(MyReviewResponse.class,
+                        review.id,
+                        review.book.id,
+                        review.book.thumbnailUrl,
+                        review.book.title,
+                        review.book.author,
+                        review.user.nickname,
+                        review.title,
+                        review.phrase,
+                        review.user.profileUrl,
+                        review.contents,
+                        review.createdAt,
+                        review.rating,
+                        like.id.countDistinct(),
+                        comment.id.countDistinct()))
+                .from(review)
+                .leftJoin(like)
+                .on(like.review.eq(review))
+                .leftJoin(comment)
+                .on(comment.review.eq(review),
+                        comment.isDeleted.eq(false))
+                .join(user)
+                .on(user.eq(review.user))
+                .join(review.book)
+                .where(review.user.eq(my))
+                .orderBy(review.id.desc())
+                .groupBy(review.id)
+                .fetch()
+                ;
     }
 
     private BooleanExpression eqBookId(Long bookId) {

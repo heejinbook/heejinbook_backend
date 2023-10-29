@@ -78,6 +78,9 @@ public class Review {
         return likes.size();
     }
 
+    public Long getCommentCount() {
+        return comments.stream().filter(comment -> comment.getIsDeleted() == false).count();}
+
     public static Review from(RegisterReviewRequest registerReviewRequest, Book book, User user) {
         return Review.builder()
                 .book(book)
