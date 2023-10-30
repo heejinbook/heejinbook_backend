@@ -17,10 +17,15 @@ import springfox.documentation.service.SecurityReference;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spi.service.contexts.SecurityContext;
 import springfox.documentation.spring.web.plugins.Docket;
+import springfox.documentation.swagger.web.UiConfiguration;
+import springfox.documentation.swagger.web.UiConfigurationBuilder;
 
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+
+import static org.hibernate.validator.internal.util.CollectionHelper.newHashSet;
 
 @Configuration
 public class SwaggerConfig {
@@ -30,6 +35,7 @@ public class SwaggerConfig {
         return new Docket(DocumentationType.OAS_30)
                 .securityContexts(Arrays.asList(securityContext()))
                 .securitySchemes(Arrays.asList(apiKey()))
+                .protocols(Collections.singleton("https"))
                 .select()
                 .apis(RequestHandlerSelectors.basePackage("com.book.heejinbook.controller"))
                 .paths(PathSelectors.any())
@@ -38,8 +44,13 @@ public class SwaggerConfig {
                 .consumes(Collections.singleton(MediaType.MULTIPART_FORM_DATA_VALUE))
                 .produces(Collections.singleton(MediaType.APPLICATION_JSON_VALUE))
                 .alternateTypeRules(AlternateTypeRules.newRule(typeResolver.resolve(Pageable.class), typeResolver.resolve(CustomPageableRequest.class)));
+    }
 
-
+    @Bean
+    public UiConfiguration uiConfig() {
+        return UiConfigurationBuilder.builder()
+                .supportedSubmitMethods(UiConfiguration.Constants.DEFAULT_SUBMIT_METHODS)
+                .build();
     }
 
     private ApiInfo apiInfo() {
