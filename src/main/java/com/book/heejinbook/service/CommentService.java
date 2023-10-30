@@ -2,6 +2,8 @@ package com.book.heejinbook.service;
 
 import com.book.heejinbook.dto.comment.request.RegisterCommentRequest;
 import com.book.heejinbook.dto.comment.response.CommentListResponse;
+import com.book.heejinbook.dto.sse.response.CommentSseResponse;
+import com.book.heejinbook.dto.sse.response.LikeSseResponse;
 import com.book.heejinbook.entity.Comment;
 import com.book.heejinbook.entity.Review;
 import com.book.heejinbook.entity.User;
@@ -13,9 +15,12 @@ import com.book.heejinbook.repository.comment.CommentRepository;
 import com.book.heejinbook.repository.review.ReviewRepository;
 import com.book.heejinbook.repository.UserRepository;
 import com.book.heejinbook.security.AuthHolder;
+import com.book.heejinbook.utils.DateUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -27,6 +32,7 @@ public class CommentService {
     private final CommentRepository commentRepository;
     private final UserRepository userRepository;
     private final ReviewRepository reviewRepository;
+    private final NotificationService notificationService;
 
     public void registerComment(Long reviewId, RegisterCommentRequest request) {
 
@@ -40,6 +46,15 @@ public class CommentService {
                 .contents(request.getContents())
                 .build();
         commentRepository.save(comment);
+
+        CommentSseResponse commentSseResponse = CommentSseResponse.builder()
+                .nickname(user.getNickname())
+                .reviewId(reviewId)
+                .thumbnail(review.getBook().getThumbnailUrl())
+                .commentTime(DateUtils.formatLocalDateTime(LocalDateTime.now(ZoneId.of("Asia/Seoul"))))
+                .build();
+        notificationService.customNotify(review.getUser().getId(), commentSseResponse, "작성하신 리뷰에 좋아요가 달렸습니다", "comment");
+
     }
 
     public void changeComment(Long commentId, RegisterCommentRequest request) {
