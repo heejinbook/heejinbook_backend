@@ -22,10 +22,8 @@ import springfox.documentation.swagger.web.UiConfigurationBuilder;
 
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
 
-import static org.hibernate.validator.internal.util.CollectionHelper.newHashSet;
 
 @Configuration
 public class SwaggerConfig {
