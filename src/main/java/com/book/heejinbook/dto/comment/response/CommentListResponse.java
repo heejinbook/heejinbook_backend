@@ -17,6 +17,7 @@ public class CommentListResponse {
     private Long reviewId;
     private String contents;
     private String commentAuthor;
+    private String commentAuthorProfileUrl;
     private String commentCreatedAt;
 
     public static CommentListResponse from(Comment comment) {
@@ -25,6 +26,7 @@ public class CommentListResponse {
                 .commentId(comment.getId())
                 .contents(comment.getContents())
                 .commentAuthor(comment.getUser().getNickname())
+                .commentAuthorProfileUrl(comment.getUser().getProfileUrl())
                 .commentCreatedAt(DateUtils.convertToString(comment.getCreatedAt()))
                 .build();
     }
