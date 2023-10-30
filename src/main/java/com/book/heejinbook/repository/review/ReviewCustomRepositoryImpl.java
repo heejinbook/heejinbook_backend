@@ -210,6 +210,7 @@ public class ReviewCustomRepositoryImpl implements ReviewCustomRepository {
                         comment.review.eq(detailReview),
                         comment.isDeleted.eq(false)
                 )
+                .orderBy(comment.id.desc())
                 .fetch();
         Objects.requireNonNull(detailReviewResponse).setComments(commentList);
 
