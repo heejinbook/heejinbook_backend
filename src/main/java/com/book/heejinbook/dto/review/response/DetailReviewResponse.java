@@ -38,14 +38,16 @@ public class DetailReviewResponse {
         private Long reviewId;
         private String contents;
         private String commentAuthor;
+        private String commentAuthorProfileUrl;
         private String commentCreatedAt;
         private Boolean isMine;
 
-        public CommentList(Long commentId, Long reviewId, String contents, String commentAuthor, Instant commentCreatedAt, Boolean isMine) {
+        public CommentList(Long commentId, Long reviewId, String contents, String commentAuthor, String commentAuthorProfileUrl, Instant commentCreatedAt, Boolean isMine) {
             this.commentId = commentId;
             this.reviewId = reviewId;
             this.contents = contents;
             this.commentAuthor = commentAuthor;
+            this.commentAuthorProfileUrl = commentAuthorProfileUrl;
             this.commentCreatedAt = DateUtils.convertToString(commentCreatedAt);
             this.isMine = isMine;
         }

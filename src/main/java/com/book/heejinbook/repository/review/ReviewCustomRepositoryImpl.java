@@ -198,6 +198,7 @@ public class ReviewCustomRepositoryImpl implements ReviewCustomRepository {
                         comment.review.id,
                         comment.contents,
                         comment.user.nickname,
+                        comment.user.profileUrl,
                         comment.createdAt,
                         JPAExpressions.select(Expressions.constant(true))
                                 .from(user)
